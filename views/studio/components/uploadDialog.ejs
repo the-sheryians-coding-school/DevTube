@@ -1,0 +1,302 @@
+<link rel="stylesheet" href="/css/studio/components/uploaddialog.css" />
+
+<form action="/channel/videos/upload" method="post" class="upload-dialog upload">
+
+  <div class="submitting-cover"></div>
+
+  <div class="header">
+    <h1 class="title">Upload video</h1>
+    <div class="right">
+      <p class="status">Saved as private</p>
+      <svg class="cancel" viewBox="0 0 24 24">
+        <path d="M12.7,12l6.6,6.6l-0.7,0.7L12,12.7l-6.6,6.6l-0.7-0.7l6.6-6.6L4.6,5.4l0.7-0.7l6.6,6.6l6.6-6.6l0.7,0.7L12.7,12z">
+        </path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="upload">
+    <div class="top">
+      <input type="file" name="video" id="videoInput" accept="video/*" required />
+      <div class="upload-icon">
+        <label for="videoInput">
+          <video src="/uploading.mp4"></video>
+        </label>
+        <div class="text-info">
+          <p>Select your video to upload <span>Your videos will be private until you publish them.</span></p>
+        </div>
+        <label for="videoInput" class="videoInput-label">SELECT VIDEO</label>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <p class="tnc">By submitting your videos to DevTube, you acknowledge that you agree to DevTube's <span>Terms of Service</span> and <span>Community Guidelines</span></p>
+      <p class="tnc">Please be sure not to violate others' copyright or privacy rights. Learn more </p>
+    </div>
+  </div>
+
+  <div class="loading">
+    <div class="loader"></div>
+  </div>
+
+  <div class="top-progress">
+    <label class="details info">
+      <label for="circle1">Details</label>
+      <input class="circle" type="radio" id="circle1" name="circle" checked />
+    </label>
+
+    <label class="checks info">
+      <label for="circle3">Checks</label>
+      <input class="circle" type="radio" id="circle2" name="circle" />
+      <div class="line"></div>
+    </label>
+
+    <label class="visibility info">
+      <label for="circle3">Visibility</label>
+      <input class="circle" type="radio" id="circle3" name="circle" />
+      <div class="line"></div>
+    </label>
+  </div>
+
+  <div class="body scrollable">
+    <div class="heading details hidden pages-items">
+      <span>Details</span>
+      <div class="reuse">Reuse details</div>
+    </div>
+
+    <div class="heading checks hidden pages-items">
+      <span>Checks</span>
+    </div>
+
+    <div class="heading visibility hidden pages-items">
+      <span>Visibility</span>
+    </div>
+
+    <div class="main">
+
+      <div class="left details hidden pages-items">
+        <div class="input-container title">
+          <div class="outer">
+            <div class="label">
+              <span class="label-text"> Title </span>
+            </div>
+            <input name="title" maxlength="100" minlength="0" placeholder="Add a title that describes your video (type @ to mention a channel)" class="textbox" type="text" />
+            <div class="char-counter">
+              <span>0/100</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-container description">
+          <div class="outer">
+            <div class="label">
+              <span class="label-text"> Description </span>
+            </div>
+            <textarea name="description" maxlength="5000" placeholder="Tell viewers about your video (type @ to mention a channel)" class="textbox scrollable " onInput="this.style.height='1px'; this.style.height = (this.scrollHeight)+'px';"></textarea>
+            <div class="char-counter">
+              <span>0/5000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thumbnail generating">
+          <p class="sub-heading">Thumbnail</p>
+          <p class="sub-info">
+            Select or upload a picture that shows what's in your video. A good
+            thumbnail stands out and draws viewers' attention.
+          </p>
+          <div class="row">
+            <div class="thumbnail-input" for="thumbnail">
+              <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 13.6L16.8 17H11.4L11.7 16.6L14 13.6ZM8.9 14.7L10.1 16.6L10.4 17H7.1L8.9 14.7ZM14 12L11 16L9 13L5 18H19L14 12ZM21 7H19V9H17V7H15V5H17V3H19V5H21V7ZM13 4V10V11H14H20V20H4V4H13ZM14 3H3V21H21V10H14V3Z" fill="#a7a7a7" />
+              </svg>
+              <label for="thumbnail">Upload thumbnail</label>
+              <label class="thumbnail-preview" for="thumbnail">
+                <img src="" alt="Thumbnail" />
+              </label>
+              <input type="file" id="thumbnail" name="thumbnail" hidden />
+            </div>
+
+            <div class="thumbnail-selector">
+              <input class="select-thumbnail" type="radio" id="thumbnail-1" hidden name="thumbnail" value="1" />
+              <label for="thumbnail-1">
+                <img src="" alt="Thumbnail 1" class="thumbnail-option" />
+              </label>
+              <input value="2" class="select-thumbnail" type="radio" id="thumbnail-2" hidden name="thumbnail" />
+              <label for="thumbnail-2">
+                <img src="" alt="Thumbnail 2" class="thumbnail-option" />
+              </label>
+              <input value="3" class="select-thumbnail" type="radio" id="thumbnail-3" hidden name="thumbnail" />
+              <label for="thumbnail-3">
+                <img src="" alt="Thumbnail 3" class="thumbnail-option" />
+              </label>
+            </div>
+
+            <div class="thumbnail-skeleton">
+              <div class="holder"></div>
+              <div class="holder"></div>
+              <div class="holder"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="playlist">
+          <p class="sub-heading">Playlists</p>
+          <p class="sub-info">
+            Add your video to one or more playlists to organize your content for
+            viewers.
+          </p>
+        </div>
+
+        <div class="showmore">
+          <p class="label">SHOW MORE</p>
+          <p class="info">Tags, show comments & likes, and more</p>
+
+          <div class="more">
+            <div class="tags">
+              <p class="sub-heading">Tags</p>
+              <p class="sub-info">
+                Tags can be useful if content in your video is commonly
+                misspelled. Otherwise, tags play a minimal role in helping
+                viewers find your video.
+              </p>
+              <div class="input-container tags">
+                <div class="outer">
+                  <input maxlength="100" minlength="0" placeholder="Add tag" class="textbox" type="text" />
+                </div>
+              </div>
+              <div class="bottom">
+                <span>Enter a comma after each tag</span>
+                <span class="char-count">0/500</span>
+              </div>
+            </div>
+
+            <div class="comments">
+              <p class="sub-heading">Comments and ratings</p>
+              <p class="sub-info">
+                Choose if and how you want to show comments
+              </p>
+              <div class="options">
+                <div class="option">
+                  <input type="radio" id="options-1" class="on" name="comments" value="On" />
+                  <label for="options-1">On</label>
+                </div>
+                <div class="option">
+                  <input type="radio" id="options-2" class="off" name="comments" value="Off" />
+                  <label for="options-2">Off</label>
+                </div>
+              </div>
+              <label class="views">
+                <input class="view" id="view" name="view" checked="" type="checkbox" />
+                <span>Show how many viewers like this video</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="left checks hidden pages-items">
+        <p class="description">
+          We’ll check your video for issues that may restrict its visibility and
+          then you will have the opportunity to fix issues before publishing
+          your video.
+        </p>
+
+        <div class="danger hidden">
+          <p class="heading">Adult content detected</p>
+          <p>We detected unappropriated (18+) content in your video kindly review & revise your video.</p>
+        </div>
+
+        <div class="copyright">
+          <p class="heading">Copyright</p>
+          <p>No issues found</p>
+        </div>
+
+
+        <p class="note">
+          Remember: These check results aren’t final. Issues may come up in the
+          future that impact your video.
+        </p>
+      </div>
+
+      <div class="left visibility hidden pages-items">
+        <p class="description">
+          Choose when to publish and who can see your video
+        </p>
+        <div class="selector">
+          <p class="label">Save or publish</p>
+          <p class="info">
+            Make your video <strong>public</strong> ,
+            <strong>unlisted</strong> , or <strong>private</strong>
+          </p>
+          <div class="options">
+            <div class="option">
+              <input type="radio" id="private" name="visibility" value="On" />
+              <label for="private">Private</label>
+            </div>
+            <span class="info">Only you and people you choose can watch your video</span>
+            <div class="option">
+              <input type="radio" id="unlisted" name="visibility" value="Off" />
+              <label for="unlisted">Unlisted</label>
+            </div>
+            <span class="info">
+              Anyone with the video link can watch your video
+            </span>
+            <div class="option">
+              <input type="radio" id="public" class="publishPublic" name="visibility" value="Off" />
+              <label for="public">Public</label>
+            </div>
+            <span class="info"> Everyone can watch your video </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right details visibility hidden">
+        <div class="preview-container">
+          
+        </div>
+        <div class="main">
+          <div class="row">
+            <div class="info">
+              <p class="label">Video link</p>
+              <a class="link" href=""></a>
+            </div>
+            <svg class="copy" viewBox="0 0 24 24">
+              <path d="M19,6v15H8V6H19 M15,2H4v16h1V3h10V2L15,2z M20,5H7v17h13V5L20,5z" />
+            </svg>
+          </div>
+          <div class="row">
+            <div class="info">
+              <p class="label filename">Filename</p>
+              <p class="name"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="start">
+      <svg id="uploaded" viewBox="0 0 24 24">
+        <path d="M17,18v1H6V18ZM6.49,9l.71.71L11,5.91V16h1V5.91l3.8,3.81L16.51,9l-5-5Z"></path>
+      </svg>
+      <svg id="resolution" viewBox="0 0 24 24">
+        <path class="sd" d="M5 17V15H9V13H7C5.89 13 5 12.11 5 11V9C5 7.89 5.89 7 7 7H11V9H7V11H9C10.11 11 11 11.89 11 13V15C11 16.11 10.11 17 9 17H5ZM19 10V14C19 15.66 17.66 17 16 17H13V7H16C17.66 7 19 8.34 19 10ZM17 10C17 9.45 16.55 9 16 9H15V15H16C16.55 15 17 14.55 17 14V10ZM21 3V21H3V3H21ZM20 4H4V20H20V4Z">
+        </path>
+        <path class="hd" d="M3 3V21H21V3H3ZM20 20H4V4H20V20ZM16 7H13V17H16C17.66 17 19 15.66 19 14V10C19 8.34 17.66 7 16 7ZM15 15V9H16C16.55 9 17 9.45 17 10V14C17 14.55 16.55 15 16 15H15ZM11 7V17H9V13H7V17H5V7H7V11H9V7H11Z">
+        </path>
+      </svg>
+      <svg id="checked" viewBox="0 0 24 24">
+        <path d="M9.8,17.3l-4.2-4.1L7,11.8l2.8,2.7L17,7.4l1.4,1.4L9.8,17.3z M12,3c-5,0-9,4-9,9s4,9,9,9s9-4,9-9S17,3,12,3 M12,2 c5.5,0,10,4.5,10,10s-4.5,10-10,10S2,17.5,2,12S6.5,2,12,2L12,2z">
+        </path>
+      </svg>
+      <p class="video-status">Uploading...</p>
+    </div>
+    <button type="submit">Next</button>
+  </div>
+</form>
+
+<div class="upload-dialog-cover"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.1.0/dist/tus.min.js"></script>

@@ -1,0 +1,81 @@
+<style>
+  .content-section .content-tabs-component {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+    display: flex;
+    margin-top: 10px;
+  }
+
+  .content-section .content-tabs-component .tab {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    height: 48px;
+    justify-content: center;
+    margin-right: 24px;
+    min-width: 48px;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+
+  .content-section .padded {
+    padding: <%=padding%>;
+
+  }
+
+  .content-section.videos .content-tabs-component .tab.videos {
+    border-bottom: 2px solid var(--primary-light);
+  }
+
+  .content-section.shorts .content-tabs-component .tab.shorts {
+    border-bottom: 2px solid var(--primary-light);
+  }
+
+
+  .content-section hr {
+    border-color: var(--border-color-dark);
+  }
+
+  .content-section .content-tabs .tab {
+    display: none;
+  }
+
+  .content-section.videos .content-tabs .videos-tab {
+    display: flex;
+  }
+
+  .content-section.shorts .content-tabs .shorts-tab {
+    display: flex;
+  }
+</style>
+
+<div class="content-section">
+  <div class="content-tabs-component padded">
+    <span onclick="setActiveTab('videos')" class="tab videos">Videos</span>
+    <span onclick="setActiveTab('shorts')" class="tab shorts">Shorts</span>
+  </div>
+  <hr>
+  <div class="content-tabs padded">
+    <div class="videos-tab tab">
+      <%- include('./videos.ejs',{query})%>
+    </div>
+    <div class="shorts-tab tab">
+      <%- include('./shorts.ejs',{query})%>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const contentSection = document.querySelector('.content-section')
+
+  function setActiveTab(tab) {
+    contentSection.className = 'content-section'
+    contentSection.classList.add(tab || 'videos')
+  }
+
+  setActiveTab()
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevTube</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/devtube/styles.css" />
+  <link rel="stylesheet" href="/css/devtube/components/nav.css" />
+  <style>
+    .main-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .main-body .image {
+      margin-top: 140px;
+      height: 161px;
+      width: 278px;
+    }
+
+    .main-body .message {
+      font-family: "Roboto", "Arial", sans-serif;
+      font-weight: 500;
+      margin-top: 24px;
+      margin-bottom: 40px;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 400;
+    }
+
+    .main-body a {
+      font-family: "Roboto", "Arial", sans-serif;
+      font-weight: 500;
+      line-height: 24px;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--transparent-light-25);
+      padding: 0 16px;
+      height: 36px;
+      font-size: 14px;
+      line-height: 36px;
+      border-radius: 18px;
+    }
+
+    .main-body a:hover {
+      background-color: var(--transparent-accent-15);
+    }
+    .main-body a:active {
+      background-color: var(--transparent-accent-20);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <%- include('./devtube/components/nav.ejs') %>
+    <div class="main-body">
+      <img class="image" src="https://ik.imagekit.io/technoaayush/Const/unavailable_video_dark_theme_DOOC2xvohR.png" alt="">
+      <span class="message"><%= message %></span>
+      <a href="/">GO TO HOME</a>
+    </div>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,368 @@
+<link rel="stylesheet" href="/css/studio/pages/content.css" />
+
+<div class="main content">
+  <div class="top">
+    <p class="heading">Channel content</p>
+    <div class="tabs">
+      <div onclick="setContentTabUrl(1)" class="btn active">Videos</div>
+      <div onclick="setContentTabUrl(2)" class="btn">Shorts</div>
+      <div onclick="setContentTabUrl(3)" class="btn">Live</div>
+      <div onclick="setContentTabUrl(4)" class="btn">Playlist</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="bar r"></div>
+    <div class="topbar bar">
+      <p>
+        <span>
+          Video
+        </span>
+      </p>
+      <p class="child">Visibility</p>
+      <p class="child">Restrictions</p>
+      <p class="child">Date</p>
+      <p class="child">Views</p>
+      <p class="child">Comments</p>
+      <p class="child">Likes (vs. dislikes)</p>
+    </div>
+    <div class="scrollable">
+      <div class="contents-container">
+
+      </div>
+      <div class="bottombar bar"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="cancel-dialog hidden"></div>
+
+
+<script>
+  const deleteDialog = document.querySelector('.cancel-dialog')
+  var contentsContainer = document.querySelector('.contents-container')
+
+  var currentFetch = null
+
+  function loadItems(page = 1, type = 'videos') {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    fetch(`/studio/${type}?page=${page}`, {
+      method: 'GET',
+      signal: signal
+
+    }).then(res => res.json()).then(data => {
+      contentsContainer.innerHTML = ''
+      data.items.map(video => {
+        const {
+          comments,
+          thumbnailFileName,
+          restrictions,
+          description,
+          isDraft,
+          length,
+          likeDislike,
+          likes,
+          privacySettings,
+          title,
+          uid,
+          videoId,
+          views
+        } = video
+
+        contentsContainer.appendChild(createVideoBlock({
+          thumbnail: `/api/getThumbnail?videoId=${videoId}&thumbnailName=${thumbnailFileName.replace(".jpg", "")}`,
+          length: formatSeconds(length),
+          title,
+          description,
+          visibility: privacySettings,
+          restrictions,
+          date: 'May 24,2034',
+          views,
+          comments,
+          likes,
+          likeDislike,
+          isDraft,
+          videoId,
+          uid
+        }))
+      })
+    }).catch(error => {
+      if (error.name === 'AbortError') {
+        console.info('Fetch aborted');
+      } else {
+        console.error('Fetch error:', error);
+      }
+    });
+    return controller;
+  }
+
+  function createVideoBlock({
+    videoId,
+    uid,
+    thumbnail,
+    length,
+    title,
+    description,
+    visibility,
+    restrictions,
+    date,
+    views,
+    comments,
+    likeDislike,
+    isDraft
+  }) {
+
+    const videoBlock = document.createElement("div");
+    videoBlock.className = "videos bar";
+
+    const video = document.createElement("div");
+    video.className = "video";
+    videoBlock.appendChild(video);
+
+    const thumbnailDiv = document.createElement("div");
+    thumbnailDiv.className = "video-container";
+    video.appendChild(thumbnailDiv);
+
+    const img = document.createElement("img");
+    img.src = thumbnail;
+    img.alt = "thumbnail";
+    thumbnailDiv.appendChild(img);
+
+    const lengthSpan = document.createElement("span");
+    lengthSpan.className = "length";
+    lengthSpan.textContent = length;
+    thumbnailDiv.appendChild(lengthSpan);
+
+    const infoDiv = document.createElement("div");
+    infoDiv.className = "info";
+    video.appendChild(infoDiv);
+
+    const titleP = document.createElement("p");
+    titleP.className = "title";
+    titleP.textContent = title;
+    infoDiv.appendChild(titleP);
+
+    const moreDiv = document.createElement("div");
+    moreDiv.className = "more";
+    infoDiv.appendChild(moreDiv);
+
+    const descriptionP = document.createElement("p");
+    if (description.length > 0) descriptionP.style.color = 'var(--transparent-light-60)'
+    else description = 'Add description'
+    descriptionP.textContent = description;
+    moreDiv.appendChild(descriptionP);
+
+    const btnsDiv = document.createElement("div");
+    btnsDiv.className = "btns";
+    moreDiv.appendChild(btnsDiv);
+
+    const btns = [{
+        path: "M14.06 7.6L16.4 9.94L6.34 20H4V17.66L14.06 7.6ZM14.06 6.19L3 17.25V21H6.75L17.81 9.94L14.06 6.19ZM17.61 4.05L19.98 6.42L18.84 7.56L16.47 5.19L17.61 4.05ZM17.61 2.63L15.06 5.18L18.85 8.97001L21.4 6.42L17.61 2.63Z",
+        action: ""
+      },
+      {
+        path: "M9 17H7V10H9V17ZM13 7H11V17H13V7ZM17 14H15V17H17V14ZM20 4H4V20H20V4ZM21 3V21H3V3H21Z",
+        action: ""
+      },
+      {
+        path: "M8 7H16V9H8V7ZM8 13H13V11H8V13ZM5 3V16H15H15.41L15.7 16.29L19 19.59V3H5ZM4 2H20V22L15 17H4V2Z",
+        action: ""
+      },
+      {
+        path: "M10,9.35,15,12l-5,2.65ZM12,6a54.36,54.36,0,0,0-7.56.38A1.53,1.53,0,0,0,3.38,7.44,24.63,24.63,0,0,0,3,12a24.63,24.63,0,0,0,.38,4.56,1.53,1.53,0,0,0,1.06,1.06A54.36,54.36,0,0,0,12,18a54.36,54.36,0,0,0,7.56-.38,1.53,1.53,0,0,0,1.06-1.06A24.63,24.63,0,0,0,21,12a24.63,24.63,0,0,0-.38-4.56,1.53,1.53,0,0,0-1.06-1.06A54.36,54.36,0,0,0,12,6h0m0-1s6.25,0,7.81.42a2.51,2.51,0,0,1,1.77,1.77A25.87,25.87,0,0,1,22,12a25.87,25.87,0,0,1-.42,4.81,2.51,2.51,0,0,1-1.77,1.77C18.25,19,12,19,12,19s-6.25,0-7.81-.42a2.51,2.51,0,0,1-1.77-1.77A25.87,25.87,0,0,1,2,12a25.87,25.87,0,0,1,.42-4.81A2.51,2.51,0,0,1,4.19,5.42C5.75,5,12,5,12,5Z",
+        action: "/watch?v=" + uid
+      },
+      {
+        path: "M11,17H9V8h2V17z M15,8h-2v9h2V8z M19,4v1h-1v16H6V5H5V4h4V3h6v1H19z M17,5H7v15h10V5z",
+        action: ""
+      }
+    ];
+
+    btns.forEach((btn, i) => {
+
+      if (!(isDraft && (i == 1 || i == 2))) {
+        let a
+        if (i == 0) {
+          a = document.createElement("div");
+          a.setAttribute('onclick', `updateQueryStringParameter('video','${videoId}')`)
+          a.href = btn.action;
+        } else if (i == 4) {
+          a = document.createElement("div");
+          a.setAttribute('onclick', `createDeleteDialog('${videoId}')`)
+          a.href = btn.action;
+        } else {
+          a = document.createElement("a");
+          a.href = btn.action;
+        }
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute('viewBox', "0 0 24 24")
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute('d', btn.path)
+
+        svg.appendChild(path);
+        a.appendChild(svg);
+
+        btnsDiv.appendChild(a);
+      }
+    });
+
+    const visibilityDiv = document.createElement("div");
+    visibilityDiv.className = "visibility child";
+    videoBlock.appendChild(visibilityDiv);
+
+
+    let visibilitySvgPath;
+
+    // Handle draft status
+    if (isDraft) {
+      visibilitySvgPath = "M14,2H4v20h16V8L14,2z M14,3.4L18.6,8H14V3.4z M5,21V3h8v6h6v12H5z";
+      visibility = "Draft"; // Change visibility text to "Draft" if isDraft is true
+    } else {
+      switch (visibility.toLowerCase()) {
+        case "public":
+          visibilitySvgPath = "M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M3,12c0-0.7,0.09-1.37,0.24-2.02 L8,14.71v0.79c0,1.76,1.31,3.22,3,3.46v1.98C6.51,20.44,3,16.62,3,12z M11.5,18C10.12,18,9,16.88,9,15.5v-1.21l-5.43-5.4 C4.84,5.46,8.13,3,12,3c1.05,0,2.06,0.19,3,0.53V5c0,0.55-0.45,1-1,1h-3v2c0,0.55-0.45,1-1,1H8v3h6c0.55,0,1,0.45,1,1v4h2 c0.55,0,1,0.45,1,1v0.69C16.41,20.12,14.31,21,12,21v-3H11.5z M18.97,17.69C18.82,16.73,18,16,17,16h-1v-3c0-1.1-0.9-2-2-2H9v-1h1 c1.1,0,2-0.9,2-2V7h2c1.1,0,2-0.9,2-2V3.95c2.96,1.48,5,4.53,5,8.05C21,14.16,20.24,16.14,18.97,17.69z";
+          visibility = 'Public';
+          break;
+        case "private":
+          visibilitySvgPath = "M17,8V6.63C17,4.08,14.76,2,12,2S7,4.08,7,6.63V8H4v14h16V8H17z M8,6.63c0-2.02,1.79-3.66,4-3.66s4,1.64,4,3.66V8H8V6.63z M19,21H5V9h14V21z M12,12c-1.66,0-3,1.34-3,3s1.34,3,3,3s3-1.34,3-3S13.66,12,12,12z M12,17c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2 s2,0.9,2,2C14,16.1,13.1,17,12,17z";
+          visibility = 'Private';
+          break;
+        case "unlisted":
+          visibilitySvgPath = "M17.78,16H13v-1h4.78c1.8,0,3.26-1.57,3.26-3.5S19.58,8,17.78,8H13V7h4.78c2.35,0,4.26,2.02,4.26,4.5S20.13,16,17.78,16z M11,15H6.19c-1.8,0-3.26-1.57-3.26-3.5S4.39,8,6.19,8H11V7H6.19c-2.35,0-4.26,2.02-4.26,4.5S3.84,16,6.19,16H11V15z M16,11H8v1h8 V11z";
+          visibility = 'Unlisted';
+          break;
+      }
+    }
+
+
+    // Create and append visibility SVG using the determined path
+    const visibilitySvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    visibilitySvg.setAttribute('viewBox', "0 0 24 24")
+    const visibilityPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    visibilityPath.setAttribute('d', visibilitySvgPath)
+
+    visibilitySvg.appendChild(visibilityPath);
+    visibilityDiv.appendChild(visibilitySvg);
+
+    // Append visibility text
+    const visibilitySpan = document.createElement("span");
+    visibilitySpan.textContent = visibility;
+    visibilityDiv.appendChild(visibilitySpan);
+
+    const restrictionsP = document.createElement("p");
+    restrictionsP.className = "child";
+    restrictionsP.textContent = restrictions;
+    videoBlock.appendChild(restrictionsP);
+
+    const dateDiv = document.createElement("div");
+    dateDiv.className = "date child";
+    videoBlock.appendChild(dateDiv);
+
+    const dateP1 = document.createElement("p");
+    dateDiv.appendChild(dateP1);
+
+    const dateP2 = document.createElement("p");
+    dateDiv.appendChild(dateP2);
+
+    const viewsP = document.createElement("p");
+    viewsP.className = "child";
+    videoBlock.appendChild(viewsP);
+
+    const commentsP = document.createElement("p");
+    commentsP.className = "child";
+    videoBlock.appendChild(commentsP);
+
+    const likeDislikeDiv = document.createElement("div");
+    likeDislikeDiv.className = "child";
+    const likeDislikeSpan = document.createElement("span");
+
+    likeDislikeDiv.appendChild(likeDislikeSpan);
+    videoBlock.appendChild(likeDislikeDiv);
+
+
+    if (!isDraft) {
+      dateP1.textContent = date;
+      dateP2.textContent = "Uploaded";
+      viewsP.textContent = views;
+      commentsP.textContent = comments;
+      likeDislikeSpan.textContent = likeDislike;
+    } else {
+      likeDislikeDiv.className = "child draft";
+      likeDislikeSpan.textContent = 'Edit Draft';
+      likeDislikeSpan.setAttribute('onclick', `updateQueryStringParameter('video','${videoId}')`)
+    }
+
+    return videoBlock;
+  }
+
+  function formatSeconds(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return hours > 0 ?
+      `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}` :
+      `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
+
+  function setContentTab() {
+    const tabNo = {
+      undefined: 1,
+      'videos': 1,
+      'shorts': 2,
+      'live': 3,
+      'playlists': 4,
+    }
+    document.querySelectorAll('.main.content .top .tabs .btn').forEach(btn => btn.classList.remove('active'))
+    document.querySelector(`.main.content .top .tabs > :nth-child(${tabNo[window.location.pathname.split('/')[5]]})`).classList.add('active')
+
+    if (currentFetch) currentFetch.abort()
+    currentFetch = loadItems(getQueryParam('page') || 1, window.location.pathname.split('/')[5])
+  }
+
+  function createDeleteDialog(VideoId) {
+    const dialog = `
+         <div class="container">
+           <h1>Delete Video</h1>
+           <p>Your video will be permanently deleted</p>
+           <div class="options">
+             <button onclick="closeDeleteDialog()">Close</button>
+             <button onclick="deleteVideo('${VideoId}')">Delete Video</button>
+           </div>
+         </div>`
+    deleteDialog.innerHTML = dialog
+    deleteDialog.classList.remove('hidden')
+  }
+
+  async function deleteVideo(VideoId) {
+    document.querySelector('.main.content').classList.add('updating')
+    closeDeleteDialog()
+    await fetch(`/channel/videos/delete/${VideoId}`, {
+      method: 'GET'
+    })
+    location.reload(true);
+  }
+
+  function closeDeleteDialog() {
+    deleteDialog.innerHTML = ''
+    deleteDialog.className = 'cancel-dialog hidden'
+  }
+
+  function setContentTabUrl(menuNumber) {
+    var baseURL = `${window.location.origin}/studio/channel/${window.location.pathname.split('/')[3]}`
+    var menuURLs = {
+      1: 'videos',
+      2: 'shorts',
+      3: 'live',
+      4: 'playlists'
+    }
+    var newURL = '/content/' + menuURLs[menuNumber] || ''
+
+    window.history.replaceState({}, '', newURL ? baseURL + newURL : baseURL)
+
+    refresh()
+  }
+</script>

@@ -1,0 +1,207 @@
+.main.customization {
+    font-family: "YouTube Sans", "Roboto", "Arial", sans-serif;
+    flex: 1;
+    background: var(--tertiary-dark);
+}
+
+.main.customization hr {
+    opacity: .1;
+}
+
+.main.customization .header {
+    padding: 23px 24px 23px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main.customization .customization-section {
+    font-family: "Roboto", "Noto", sans-serif;
+    height: calc(100% - 128px);
+    overflow-y: scroll;
+    max-width: 900px;
+    padding: 23px 24px 10px 32px;
+    margin-bottom: 10px;
+}
+
+
+.main.customization .header .title {
+    white-space: normal;
+    overflow: initial;
+    text-overflow: clip;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 32px;
+    flex-shrink: 1;
+}
+
+.main.customization .header .publish-container {
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+}
+
+
+.main.customization .header .publish-container .btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    text-align: center;
+    font-family: "Roboto", "Noto", sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 2px;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 14px;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.main.customization .header .publish-container.active .btn {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.main.customization .header .publish-container.active .publish {
+    background-color: var(--accent);
+}
+
+.main.customization .header .publish-container.active .cancel {
+    color: var(--accent);
+}
+
+.main.customization .header .publish-container .main.customization .header .publish-container .btn:active {
+    opacity: .8;
+}
+
+.main.customization .header .publish-container .publish {
+    border: none;
+    margin-left: 12px;
+}
+
+
+.main.customization .customization-section .input-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.main.customization .customization-section .input-field .label {
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 24px;
+}
+
+.main.customization .customization-section .input-field .detail {
+    display: block;
+    padding-bottom: 16px;
+    color: var(--transparent-light-50);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.main.customization .customization-section .input-field .input {
+    flex: 1;
+    appearance: none;
+    background-color: transparent;
+    padding: 11px 16px;
+    border: 1px solid var(--transparent-light-25);
+    border-radius: 4px;
+    line-height: 24px;
+    font-size: 15px;
+    color: var(--primary-light);
+}
+
+.main.customization .customization-section .input-field .handle-container {
+    display: flex;
+    position: relative;
+}
+
+.main.customization .customization-section .input-field .handle-container svg {
+    display: none;
+}
+
+#editChannelForm.error .input-field .handle-container svg {
+    display: block;
+}
+
+.main.customization .customization-section .input-field .handle-container svg {
+    position: absolute;
+    right: 0;
+    height: 24px;
+    width: 24px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    fill: var(--error-color);
+
+}
+
+.main.customization .customization-section .input-field .message {
+    margin-top: 4px;
+    padding-bottom: 0;
+}
+
+.main.customization .customization-section .input-field .message.detail.handle span {
+    color: var(--accent);
+}
+
+.main.customization .customization-section .input-field textarea {
+    font-family: inherit;
+    min-height: 126px;
+    resize: none;
+    margin-top: 12px;
+}
+
+.main.customization .customization-section .input-field .image-input {
+    display: flex;
+}
+
+.main.customization .customization-section .input-field .image-input .side-section {
+    margin-left: 30px;
+    max-width: 330px;
+}
+
+.main.customization .customization-section .input-field .image-input .preview {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 290px;
+    height: 160px;
+    background-color: var(--cover-color);
+    padding: 10px;
+
+}
+
+.main.customization .customization-section .input-field .image-input .preview img {
+    height: 140px;
+    border-radius: 50%;
+}
+
+.main.customization .customization-section .input-field .image-input .preview img.banner {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 0%;
+}
+
+
+.main.customization .customization-section .input-field .image-input .btn {
+    line-height: 36px;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--accent);
+}

@@ -1,0 +1,262 @@
+<style>
+  .subscribe-btn-container {
+    height: 36px;
+    position: relative;
+  }
+
+  .subscribe-btn-container .subscribe.btn,
+  .subscribe-btn-container .subscribed .btn {
+    width: fit-content;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    padding: 0 16px;
+    height: 36px;
+    border-radius: 18px;
+  }
+
+  .subscribe-btn-container .subscribe.btn {
+    background: white;
+    color: var(--secondary-dark);
+  }
+
+  .subscribe-btn-container .subscribe.btn:hover {
+    background: var(--transparent-light-85);
+  }
+
+  .subscribe-btn-container .subscribe.btn:active {
+    background: var(--transparent-light-75);
+  }
+
+  .subscribe-btn-container .subscribed .btn {
+    appearance: none;
+    height: 36px;
+    background: var(--transparent-light-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .subscribe-btn-container .subscribed .btn:hover {
+    z-index: 5;
+    background: var(--transparent-light-15);
+  }
+
+  .subscribe-btn-container .subscribed .btn:active {
+    background: var(--transparent-light-25);
+  }
+
+  .subscribe-btn-container .subscribed .btn .icon {
+    margin-right: 6px;
+    margin-left: -6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+  }
+
+  .subscribe-btn-container .subscribed .btn .icon.menu {
+    margin-right: -6px;
+    margin-left: 6px;
+  }
+
+  .subscribe-btn-container .subscribed .btn .icon.menu svg {
+    height: 24px;
+    width: 24px;
+  }
+
+  .subscribe-btn-container .subscribed .btn .icon .off {
+    display: none;
+  }
+
+  .subscribe-btn-container .subscribed.silent .btn .icon .on {
+    display: none;
+  }
+
+  .subscribe-btn-container .subscribed.silent .btn .icon .off {
+    display: block;
+  }
+
+  .subscribe-btn-container .subscribed svg {
+    height: 30px;
+    width: 30px;
+    fill: white;
+  }
+
+  .subscribe-btn-container .subscribed .panel {
+    display: none;
+    margin-top: 5px;
+    width: fit-content;
+    border: none;
+    background: var(--secondary-dark);
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 14px;
+    text-decoration: none;
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+    z-index: 15;
+    box-shadow: var(--shadow-color) 0px 3px 8px;
+  }
+
+  .subscribe-btn-container .subscribed .checkbox:checked+.panel {
+    display: flex;
+  }
+
+  .subscribe-btn-container .subscribed .panel .option {
+    padding: 7px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 150px;
+  }
+
+  .subscribe-btn-container .subscribed .panel .option:hover {
+    background-color: var(--transparent-light-10);
+  }
+
+  .subscribe-btn-container .subscribed .panel .option:active,
+  .subscribe-btn-container .subscribed.silent .panel .option.silent,
+  .subscribe-btn-container .subscribed .panel .option.notification {
+    background-color: var(--transparent-light-15);
+  }
+
+  .subscribe-btn-container .subscribed.silent .panel .option.notification {
+    background-color: transparent;
+  }
+
+  .subscribe-btn-container .subscribed .panel .option span {
+    margin-left: 5px;
+  }
+
+  .subscribe-btn-container .subscription.is-subscribed .subscribed {
+    display: block;
+  }
+
+  .subscribe-btn-container .subscription .subscribed {
+    display: none;
+  }
+
+  .subscribe-btn-container .subscription.is-subscribed .subscribe {
+    display: none;
+  }
+</style>
+
+<div class="subscribe-btn-container">
+  <div class="subscription <%= subscription ?'is-subscribed':'' %>">
+    <button onclick="subscribe('<%= currentChannel.uid %>')" class="subscribe btn">Subscribe</button>
+    <label class="subscribed <%= subscription?.mode %>">
+      <div class="btn">
+        <div class="icon">
+          <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+            <path class="on" d="M41.5 74.411H54.5C54.5 77.924 51.575 80.799 48 80.799C44.425 80.799 41.5 77.924 41.5 74.411ZM70.75 67.29L64.25 61.286V43.816C64.25 35.928 60.382 29.892 54.077 27.529C49.982 25.836 45.498 25.932 41.598 27.625C35.488 30.052 31.75 36.056 31.75 43.816V61.286L25.25 67.29V68.024H70.75V67.29ZM74 65.948V71.218H22V65.948L28.5 59.944V43.497C28.5 34.171 33.57 26.826 41.5 24.399V23.186C41.5 18.651 46.342 15.202 51.217 17.565C53.33 18.587 54.5 20.855 54.5 23.186V24.431C62.43 26.826 67.5 34.204 67.5 43.529V59.976L74 65.948Z" />
+            <path class="off" d="M21.5578 20.3146L19.2791 22.5933L30.6076 33.9219C29.2729 36.7866 28.5567 40.0745 28.5567 43.6553V60.4203L22.0461 66.5403V71.9116H68.5648L74.5871 77.934L76.8984 75.6227L21.5578 20.3146ZM25.3014 68.6563V67.9075L31.8121 61.7875V43.9809C31.8121 41.2138 32.3004 38.7072 33.1468 36.4936L65.3094 68.6563H25.3014ZM41.5781 75.1669H54.5994C54.5994 78.7478 51.6696 81.6776 48.0887 81.6776C44.5079 81.6776 41.5781 78.7478 41.5781 75.1669ZM39.2342 28.7785L36.9555 26.4997C38.3553 25.5557 39.8853 24.7419 41.5781 24.221V22.9514C41.5781 18.3289 46.4285 14.8131 51.3115 17.222C53.4275 18.2638 54.5994 20.575 54.5994 22.9514V24.221C62.5424 26.6625 67.6207 34.1823 67.6207 43.6879V57.165L64.3654 53.9096V43.9809C64.3654 35.9402 60.4915 29.7876 54.1762 27.3787C50.0745 25.6534 45.5821 25.751 41.6757 27.4763C40.7968 27.8344 40.0155 28.2576 39.2342 28.7785Z" />
+          </svg>
+        </div>
+
+        <span>Subscribed</span>
+
+        <div class="icon menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="m18 9.28-6.35 6.35-6.37-6.35.72-.71 5.64 5.65 5.65-5.65z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <input class="checkbox" type="checkbox" hidden>
+
+      <div class="panel">
+        <div onclick="notification('<%= currentChannel.uid %>')" class="option notification">
+          <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+            <path d="M41.5 74.411H54.5C54.5 77.924 51.575 80.799 48 80.799C44.425 80.799 41.5 77.924 41.5 74.411ZM70.75 67.29L64.25 61.286V43.816C64.25 35.928 60.382 29.892 54.077 27.529C49.982 25.836 45.498 25.932 41.598 27.625C35.488 30.052 31.75 36.056 31.75 43.816V61.286L25.25 67.29V68.024H70.75V67.29ZM74 65.948V71.218H22V65.948L28.5 59.944V43.497C28.5 34.171 33.57 26.826 41.5 24.399V23.186C41.5 18.651 46.342 15.202 51.217 17.565C53.33 18.587 54.5 20.855 54.5 23.186V24.431C62.43 26.826 67.5 34.204 67.5 43.529V59.976L74 65.948Z" />
+          </svg>
+          <span>Notification</span>
+        </div>
+        <div onclick="silent('<%= currentChannel.uid %>')" class="option silent">
+          <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.5578 20.3146L19.2791 22.5933L30.6076 33.9219C29.2729 36.7866 28.5567 40.0745 28.5567 43.6553V60.4203L22.0461 66.5403V71.9116H68.5648L74.5871 77.934L76.8984 75.6227L21.5578 20.3146ZM25.3014 68.6563V67.9075L31.8121 61.7875V43.9809C31.8121 41.2138 32.3004 38.7072 33.1468 36.4936L65.3094 68.6563H25.3014ZM41.5781 75.1669H54.5994C54.5994 78.7478 51.6696 81.6776 48.0887 81.6776C44.5079 81.6776 41.5781 78.7478 41.5781 75.1669ZM39.2342 28.7785L36.9555 26.4997C38.3553 25.5557 39.8853 24.7419 41.5781 24.221V22.9514C41.5781 18.3289 46.4285 14.8131 51.3115 17.222C53.4275 18.2638 54.5994 20.575 54.5994 22.9514V24.221C62.5424 26.6625 67.6207 34.1823 67.6207 43.6879V57.165L64.3654 53.9096V43.9809C64.3654 35.9402 60.4915 29.7876 54.1762 27.3787C50.0745 25.6534 45.5821 25.751 41.6757 27.4763C40.7968 27.8344 40.0155 28.2576 39.2342 28.7785Z" />
+          </svg>
+          <span>Silent</span>
+        </div>
+        <div onclick="unsubscribe('<%= currentChannel.uid %>')" class="option">
+          <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M51.8767 47.7609C58.2317 46.5992 63.0834 41.0301 63.0834 34.3334C63.0834 26.7826 56.9675 20.6667 49.4167 20.6667C41.8659 20.6667 35.75 26.7826 35.75 34.3334C35.75 41.0301 40.6017 46.5992 46.9567 47.7609C28.1309 48.7176 18.6667 60.8467 18.6667 75.3334H80.1667C80.1667 60.8467 70.7025 48.7176 51.8767 47.7609ZM39.1667 34.3334C39.1667 28.6959 43.7792 24.0834 49.4167 24.0834C55.0542 24.0834 59.6667 28.6959 59.6667 34.3334C59.6667 39.9709 55.0542 44.5834 49.4167 44.5834C43.7792 44.5834 39.1667 39.9709 39.1667 34.3334ZM49.4167 51.0751C67.6275 51.0751 75.2467 61.2909 76.545 71.9167H22.2884C23.5867 61.2909 31.2059 51.0751 49.4167 51.0751ZM28.9167 48.0001H11.8334V44.5834H28.9167V48.0001Z" />
+          </svg>
+          <span>Unsubscribed</span>
+        </div>
+      </div>
+    </label>
+  </div>
+</div>
+
+<script>
+  const subscriptionContainer = document.querySelector('.subscribe-btn-container .subscription')
+  const subscriptionIcon = document.querySelector('.subscribe-btn-container .subscription .subscribed .btn .icon')
+  const subscribedContainer = document.querySelector('.subscribe-btn-container .subscription .subscribed')
+
+  async function subscribe(uid) {
+    if (!!!`<%=channel?.uid%>`) return showSignInPopUp(document.querySelector('.subscribe-btn-container'), {
+      title: 'Want to subscribe to this channel?',
+      message: 'Sign in to subscribe to this channel.'
+    })
+    try {
+      const response = await fetch(`/api/subscribe/${uid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      subscriptionContainer.classList.add('is-subscribed');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  async function unsubscribe(uid) {
+    try {
+      const response = await fetch(`/api/unsubscribe/${uid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      subscriptionContainer.classList.remove('is-subscribed');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  async function notification(uid) {
+    try {
+      const response = await fetch(`/api/notification/${uid}/notification`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      subscribedContainer.classList.remove('silent');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  async function silent(uid) {
+    try {
+      const response = await fetch(`/api/notification/${uid}/silent`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      subscribedContainer.classList.add('silent');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+</script>

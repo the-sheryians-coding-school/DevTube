@@ -1,0 +1,151 @@
+<style>
+  .shorts-main {
+    --margin: 16px;
+    --columns: 4;
+    width: 100%;
+    position: relative;
+  }
+
+  .shorts-main .shorts-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .shorts-main .shorts {
+    padding-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .shorts-main .shorts .short {
+    position: relative;
+    margin-left: calc(var(--margin) /2);
+    margin-right: calc(var(--margin) /2);
+    margin-bottom: 40px;
+    width: 210px;
+  }
+
+  .shorts-main .shorts .short .preview {
+    display: flex;
+    position: relative;
+    width: 210px;
+    height: 300px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .shorts-main .shorts .short .preview img {
+    height: 100%;
+    width: 100%;
+  }
+
+
+  .shorts-main .shorts .short .info {
+    padding: 12px 24px 0 0;
+  }
+
+  .shorts-main .shorts .short .info .title {
+    color: var(--primary-light);
+
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    overflow: hidden;
+    max-height: 40px;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .shorts-main .shorts .short .more {
+    flex-direction: column;
+  }
+
+  @media (max-width: 1420px) {
+    .shorts-main {
+      --columns: 3
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .shorts-main {
+      --columns: 2
+    }
+  }
+
+  @media (max-width: 750px) {
+    .shorts-main {
+      --columns: 1
+    }
+  }
+</style>
+
+<div class="shorts-main">
+  <div class="shorts-container">
+    <div class="shorts">
+      <div class="short skali first"> </div>
+      <div class="short skali"> </div>
+      <div class="short skali"> </div>
+      <div class="short skali"> </div>
+      <div class="short skali"> </div>
+    </div>
+  </div>
+  <template class="short-template">
+    <div class="short">
+      <a class="preview"> <img loading="lazy" src="" alt=""> </a>
+      <div class="info">
+        <a class="title"></a>
+        <div class="views"></div>
+      </div>
+    </div>
+  </template>
+</div>
+
+<script>
+  let shortsPage = 1;
+
+  const shortContainer = document.querySelector('.shorts-container .shorts');
+  const shortAnchor = document.querySelector('.shorts-container .shorts .short.skali.first');
+
+  function renderShorts(shorts) {
+    shorts.forEach(short => {
+      const shortElement = document.createElement('div')
+
+      const template = document.querySelector('.short-template');
+      const clone = document.importNode(template, true).content;
+
+      clone.querySelector('.short').id = 'id' + short._id;
+      clone.querySelector('.preview').href = `/watch?v=${short.uid}`
+      clone.querySelector('.preview img').src = `/api/getThumbnail?videoId=${short.videoId}&thumbnailName=${short.thumbnailFileName.replace(".jpg", "")}`;
+      clone.querySelector('.info .title').textContent = short.title;
+      clone.querySelector('.info .title').href = `/watch?v=${short.uid}`
+      clone.querySelector('.info .views').textContent = `${formatNumber(short.views)} views`
+
+      shortContainer.insertBefore(clone, shortAnchor)
+
+    });
+
+  }
+
+  const fetchShorts = async () => {
+    try {
+      const response = await fetch(`/api/shorts?<%= query%>&page=${shortsPage}&limit=10`);
+      const shorts = await response.json();
+
+      renderShorts(shorts.items);
+
+      shortsPage++;
+    } catch (error) {
+      console.error('Error fetching shorts:', error);
+    }
+  };
+
+  const shortsObserver = new IntersectionObserver(async (entries) => {
+    if (entries[0].isIntersecting) {
+      await fetchShorts();
+    }
+  });
+
+  shortsObserver.observe(shortAnchor);
+</script>

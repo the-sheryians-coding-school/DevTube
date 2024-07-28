@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="/css/devtube/pages/shorts.css" />
+<div class="shorts-main">
+
+  <div class="shorts">
+
+  </div>
+
+</div>
+
+<template class="short-template">
+  <div class="short">
+    <img class="short-view" src="" alt="">
+  </div>
+</template>
+
+<script>
+  const shorts = document.querySelector('.shorts');
+
+  let shortNo = 1
+  let totalShorts
+  let isChanging = false;
+  let isNext = true
+
+  let shortsData = []
+
+  document.addEventListener('wheel', async (e) => {
+    if (!isChanging && shortNo >= 1 && !(shortNo == 1 && e.deltaY < 0) && !(totalShorts == shortNo && e.deltaY > 0)) {
+      isChanging = true;
+
+      const currentShort = shortNo
+
+      shortNo = e.deltaY > 0 ? shortNo + 1 : shortNo - 1;
+
+      shorts.style.transform = e.deltaY > 0 ? `translateY(calc(${-currentShort*100}vh + ${(128-24)*currentShort}px))` : `translateY(calc(${-(currentShort-2)*100}vh + ${(128-24)*(currentShort-2)}px))`;
+
+      startShort(e.deltaY)
+
+      if (shortsData.length === shortNo && isNext) {
+        await fetchShorts()
+        setTimeout(() => isChanging = false, 1000);
+      } else setTimeout(() => isChanging = false, 1000);
+
+    }
+  });
+
+  async function init() {
+    await fetchShorts()
+    await fetchShorts()
+  }
+
+  init()
+
+  async function startShort(dir) {
+
+    const short = document.querySelector(`.shorts #short${shortNo} .short-view`)
+    const shortBack = document.querySelector(`.shorts #short${shortNo-1} .short-view`)
+    const shortFront = document.querySelector(`.shorts #short${shortNo+1} .short-view`)
+
+    if (short)
+      short.outerHTML = `<iframe class='short-view' referrerpolicy="no-referrer" src="/api/player/${shortsData[shortNo-1].videoId}?autoplay=true" loading="lazy" style="border: none" allow="accelerometer; gyroscope; autoplay; encrypted-media;" ></iframe>`
+
+    var currentShort
+
+    if (typeof dir == 'number') {
+      currentShort = shortsData[shortNo - 1]
+      setTimeout(() => (dir < 0 ? shortFront : shortBack).outerHTML = `<img class='short-view' src="/api/getThumbnail?videoId=${shortsData[shortNo].videoId}&thumbnailName=${shortsData[shortNo].thumbnailFileName.replace(".jpg", "")}" alt="">`, 900)
+    } else {
+      currentShort = dir
+    }
+
+
+
+    let segments = (new URL(window.location.href)).pathname.split('/');
+    segments[2] = currentShort.uid;
+    history.replaceState(null, '', segments.join('/'));
+
+  }
+  async function fetchShorts(isFirst) {
+    if (isNext)
+      try {
+        const response = await fetch(`/api/shorts?${isFirst?'uid=':'noUid='}<%= uid%>&page=${shortsData.length+1}`);
+        const short = await response.json();
+        shortsData.push(short.items[0])
+        isNext = short.next;
+        if (!isFirst && !totalShorts) totalShorts = short.totalItems
+        createShort(short.items[0])
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+      }
+  }
+
+  async function createShort(short) {
+    const template = document.querySelector('.short-template');
+    const clone = document.importNode(template, true).content;
+    clone.querySelector('.short').id = 'short' + shortsData.length
+    clone.querySelector('.short img').src = `/api/getThumbnail?videoId=${short.videoId}&thumbnailName=${short.thumbnailFileName.replace(".jpg", "")}`
+    shorts.appendChild(clone)
+    if (shortsData.length === 1) startShort(short)
+  }
+</script>

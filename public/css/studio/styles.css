@@ -1,0 +1,10 @@
+* {
+    margin: 0%;
+    padding: 0%;
+}
+
+main .main-body {
+    display: flex;
+    position: relative;
+    height: calc(100% - 64px);
+}

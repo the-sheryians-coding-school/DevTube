@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevTube Studio</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/studio/styles.css" />
+  <link rel="stylesheet" href="/css/studio/components/nav.css" />
+</head>
+
+<body>
+  <main>
+    <%- include('./components/nav.ejs') %>
+
+    <div class="main-body">
+      <%- include('./components/sidenav.ejs') %>
+      <%- include(`./pages/${page}.ejs`) %>
+    </div>
+
+    <!-- Notification element for upload status, hidden by default -->
+    <div id="uploadNotification" class="notification hidden">
+      <div class="notification-header">
+        <span id="uploadStatusHeader">Uploading</span>
+        <!-- Button to hide the notification -->
+        <button onclick="hideUploadNotification()">
+          <!-- SVG for close icon -->
+          <svg viewBox="0 0 24 24">
+            <path class="close" d="M12.7,12l6.6,6.6l-0.7,0.7L12,12.7l-6.6,6.6l-0.7-0.7l6.6-6.6L4.6,5.4l0.7-0.7l6.6,6.6l6.6-6.6l0.7,0.7L12.7,12z">
+            </path>
+          </svg>
+        </button>
+      </div>
+      <div class="notification-progress">
+        <!-- Progress bar for upload status -->
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+      <div class="notification-body-container">
+        <div class="notification-body top">
+          <div class="holder current-uploading-notification">
+            <!-- SVG for editing icon -->
+            <svg class="pen" viewBox="0 0 24 24">
+              <g width="24" height="24" viewBox="0 0 24 24">
+                <path d="M14.06 7.6L16.4 9.94L6.34 20H4V17.66L14.06 7.6ZM14.06 6.19L3 17.25V21H6.75L17.81 9.94L14.06 6.19ZM17.61 4.05L19.98 6.42L18.84 7.56L16.47 5.19L17.61 4.05ZM17.61 2.63L15.06 5.18L18.85 8.97001L21.4 6.42L17.61 2.63Z">
+                </path>
+              </g>
+            </svg>
+            <!-- Span to show the file name -->
+            <span id="fileName"></i></span>
+          </div>
+          <div class="holder">
+            <!-- Span to show upload status -->
+            <span id="uploadStatus" class="status">0% uploaded</span>
+            <!-- Button to cancel the upload -->
+            <button class="active cancelUpload">
+              <!-- SVG for cancel icon -->
+              <svg viewBox="0 0 24 24">
+                <path class="cancel" d="M12.7,12l6.6,6.6l-0.7,0.7L12,12.7l-6.6,6.6l-0.7-0.7l6.6-6.6L4.6,5.4l0.7-0.7l6.6,6.6l6.6-6.6l0.7,0.7L12.7,12z">
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section for editing video, hidden by default -->
+    <div id="upload-section" style="display: none"> <%- include('./components/uploadDialog.ejs') %> </div>
+
+    <div class="cancel-dialog hidden"></div>
+
+  </main>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+  <script>
+    let tags = []
+    let taglength = 0
+    let currentPage = 0
+    let visibility = "private"
+
+    let currentUpload = {}
+    let uploadQueue = []
+    let isUploading = false
+
+    let isSubmitting = false
+
+    let totalUploads = 0
+    let currentUploadNo = 0
+
+    const videoInput = document.getElementById('videoInput')
+
+    const uploadStatusHeader = document.getElementById('uploadStatusHeader')
+
+    const progressBar = document.getElementById('progressBar')
+    const fileNameElement = document.getElementById('fileName')
+    const uploadStatusElement = document.getElementById('uploadStatus')
+
+    const uploadScreen = document.querySelector('.upload-dialog.upload .upload')
+    const uploadingAnimation = document.querySelector('.upload-dialog.upload .upload video')
+
+    const VideoForm = document.querySelector(".upload-dialog")
+    const headerTitle = document.querySelector(".upload-dialog .header .title")
+    const headerSavedStatus = document.querySelector(".upload-dialog .header .status")
+
+    const closeVideoForm = document.querySelector(".upload-dialog .header .right .cancel")
+
+    const titleInput = document.querySelector(".upload-dialog .input-container.title input")
+    const descriptionInput = document.querySelector(".upload-dialog .input-container.description textarea")
+
+    const thumbnailContainer = document.querySelector(".thumbnail")
+    const thumbnailInput = document.querySelector(".upload-dialog .thumbnail-input")
+    const thumbnailPreview = document.querySelector(".upload-dialog .thumbnail-preview img")
+    const thumbnailOptions = document.querySelectorAll("img.thumbnail-option")
+
+    const showMoreFields = document.querySelector(".upload-dialog .body .main .left .showmore .label")
+
+    const tagInput = document.querySelector(".upload-dialog .input-container.tags input")
+    const tagInputContainer = document.querySelector(".input-container.tags")
+
+    const comments = {
+      on: document.querySelector(".upload-dialog .comments .options .on"),
+      off: document.querySelector(".upload-dialog .comments .options .off")
+    }
+
+    const showViews = document.querySelector(".input-container.tags")
+
+    const pageNavGroup = document.querySelectorAll(".top-progress input")
+
+    const visibilityGroup = document.querySelectorAll(".upload-dialog .body .visibility input")
+
+    const videoPreview = document.querySelector(".upload-dialog .right .preview-container")
+
+    const submitButton = document.querySelector(".upload-dialog .footer button")
+
+    const uploadedIcon = document.querySelector(".upload-dialog .footer #uploaded")
+    const resolutionIcon = document.querySelector(".upload-dialog .footer #resolution")
+    const checkedIcon = document.querySelector(".upload-dialog .footer #checked")
+
+    const iconGroup = document.querySelectorAll(".upload-dialog .footer svg")
+
+    const checksCircle = document.querySelector(".upload-dialog .checks.info .circle")
+    const checksNote = document.querySelector(".upload-dialog .left.checks .danger")
+
+    const videoStatus = document.querySelector(".upload-dialog .footer .video-status")
+
+    const fileName = document.querySelector(".upload-dialog .right .info .name")
+    const videoLink = document.querySelector(".upload-dialog .right .link")
+
+    const navPopMenu = document.querySelector('.menu-container .menu')
+
+    titleInput.addEventListener("input", (e) => (headerTitle.textContent = e.target.value))
+
+    thumbnailInput.addEventListener("change", handleThumbnailInput)
+
+    tagInput.addEventListener("input", tagInputHandler)
+
+    videoInput.addEventListener('change', handleVideoUpload)
+
+    window.addEventListener('beforeunload', (event) => isUploading && event.preventDefault())
+
+    document.addEventListener("DOMContentLoaded", handleDOMContentLoaded)
+
+    document.querySelector('.menu-container .profile-pic')?.addEventListener('click', () => navPopMenu.classList.toggle('open'))
+
+    document.addEventListener('click', (e) => !e.target.classList.contains('block') && navPopMenu.classList.remove('open'))
+
+    showMoreFields.addEventListener('click', handleShowMoreFields)
+
+    closeVideoForm.addEventListener('click', handleCloseVideoForm)
+
+    submitButton.addEventListener('click', handleSubmitButton)
+
+
+    pageNavGroup.forEach((input, index) => {
+      input.addEventListener("click", () => {
+        if (input.checked) {
+          currentPage = index
+          setCurrentPage()
+        }
+      })
+    })
+
+    visibilityGroup.forEach((input, index) => {
+      input.addEventListener("click", () => {
+        if (input.checked) {
+          visibility = input.id
+          submitButton.textContent = visibility === "public" ? "Publish" : "Save"
+        }
+      })
+    })
+
+
+    async function handleSubmitButton(event) {
+      event.preventDefault()
+      switch (currentPage) {
+        case 1:
+          currentPage++
+          setCurrentPage()
+          break
+
+        case 2:
+          //Publish
+          if (isSubmitting) return
+
+          const form = VideoForm
+          const formData = new FormData(form)
+
+          const videoId = getQueryParam('video')
+
+          const postData = new FormData()
+          postData.append('visibility', visibility)
+          postData.append('videoId', videoId)
+          postData.append('tags', JSON.stringify(tags))
+
+          const keys = ['title', 'description', 'thumbnail', 'comments', 'view']
+
+          keys.forEach(key => postData.append(key, formData.get(key)))
+
+          isSubmitting = true
+          VideoForm.classList.add("submitting")
+
+          document.querySelector('.main.content').classList.add('updating')
+          fetch('/channel/videos/create-video', {
+              method: 'POST',
+              body: postData
+            })
+            .then(response => {
+              if (response.ok) {
+                handleCloseVideoForm()
+                if (!isUploading) location.reload();
+                document.querySelector('.main.content').classList.remove('updating')
+              } else console.error('Error:', response.error)
+            })
+            .catch(error => console.error('Error-r:', error))
+
+          break
+
+        default:
+          currentPage++
+          setCurrentPage()
+          break
+      }
+    }
+
+    function handleDOMContentLoaded() {
+      refresh()
+      window.addEventListener('popstate', e => refresh())
+    }
+
+    async function handleCloseVideoForm() {
+      removeQueryStringParameter('d')
+      removeQueryStringParameter('video')
+      resetVideoPage()
+      refresh()
+    }
+
+    function handleShowMoreFields() {
+      const showmore = document.querySelector(".showmore")
+      const label = document.querySelector(".showmore .label")
+      if (showmore.classList.contains("active")) {
+        label.textContent = "SHOW MORE"
+        showmore.classList.remove("active")
+      } else {
+        label.textContent = "SHOW LESS"
+        showmore.classList.add("active")
+      }
+    }
+
+    function handleVideoUpload(event) {
+      const file = event.target.files[0]
+      if (!file) return
+
+      uploadingAnimation.play()
+      uploadScreen.classList.add('uploading')
+      videoInput.value = ''
+
+      uploadQueue.push(file)
+      totalUploads++
+
+      processUploadQueue()
+
+      uploadStatusHeader.innerText = `Uploading ${currentUploadNo} of ${totalUploads}`
+    }
+
+    function showUploadNotification() {
+      const notification = document.getElementById('uploadNotification')
+      notification.classList.remove('hidden')
+    }
+
+    function hideUploadNotification() {
+      const notification = document.getElementById('uploadNotification')
+      notification.classList.add('hidden')
+    }
+
+    async function cancelUpload(VideoId) {
+      const upload = currentUpload[VideoId]
+      if (upload) {
+        upload.abort()
+        document.getElementById('uploadStatus').innerText = `Upload canceled`
+        document.getElementById('progressBar').style.width = `0%`
+        document.querySelector('.holder button path').classList.add('hidden')
+        uploadStatusHeader.innerText = "Uploads"
+        closeDialog()
+        await fetch(`/channel/videos/delete/${VideoId}`, {
+          method: 'GET'
+        })
+        isUploading = false
+        processUploadQueue()
+      }
+    }
+
+    function createDialog(VideoId) {
+      const dialog = document.querySelector('.cancel-dialog')
+      const newNotification = `
+         <div class="container">
+           <h1>Cancel Upload</h1>
+           <p>Any details you added to your video will be deleted</p>
+           <div class="options">
+             <button onclick="closeDialog()">Close</button>
+             <button onclick="cancelUpload('${VideoId}')">Cancel Upload</button>
+           </div>
+         </div>`
+      dialog.innerHTML = newNotification
+      dialog.classList.remove('hidden')
+    }
+
+    function closeDialog() {
+      const dialog = document.querySelector('.cancel-dialog')
+      dialog.innerHTML = ''
+      dialog.classList.add('hidden')
+    }
+
+    async function processUploadQueue() {
+      if (isUploading || uploadQueue.length === 0) return
+
+      currentUploadNo++
+
+      document.querySelector('.holder button path').classList.remove('hidden')
+
+      isUploading = true
+      const file = uploadQueue.shift()
+
+      fileNameElement.textContent = file.name
+
+      try {
+        const response = await fetch('/channel/videos/create-upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            filename: file.name,
+            filetype: file.type
+          })
+        })
+
+        if (!response.ok) throw new Error('Failed to create upload')
+
+        const data = await response.json()
+        const {
+          uploadUrl,
+          headers
+        } = data
+
+        document.querySelector('.notification-body.top').id = headers.VideoId
+
+        uploadingAnimation.addEventListener('timeupdate', function() {
+          if (uploadingAnimation.currentTime > 2.4) {
+            uploadingAnimation.pause();
+            updateQueryStringParameter('video', headers.VideoId)
+          }
+        });
+
+
+        showUploadNotification()
+
+        document.querySelector('.notification .notification-body-container .notification-body .cancelUpload').addEventListener('click', () => createDialog(headers.VideoId))
+        document.querySelector('.current-uploading-notification').addEventListener('click', () => updateQueryStringParameter('video', headers.VideoId))
+
+
+        const upload = new tus.Upload(file, {
+          endpoint: uploadUrl,
+          retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+          headers: headers,
+          metadata: {
+            filetype: file.type,
+            title: file.name,
+          },
+          onError(error) {
+            console.error('Upload failed:', error)
+            alert('Upload failed. Please try again.')
+            hideUploadNotification()
+            isUploading = false
+            processUploadQueue()
+          },
+          onProgress(bytesUploaded, bytesTotal) {
+            const percentage = (bytesUploaded / bytesTotal * 100).toFixed(2)
+            progressBar.style.width = `${percentage}%`
+            uploadStatusElement.innerText = `${percentage}% uploaded`
+          },
+          onSuccess() {
+            if (totalUploads === currentUploadNo) {
+              document.querySelector('.notification-body.top').classList.add('hidden')
+              document.querySelector('.close').classList.add('active')
+              document.querySelector('.holder button').classList.remove('active')
+              uploadStatusHeader.innerText = `Upload complete`
+            }
+
+            const nbc = document.querySelector('.notification-body-container')
+
+            const div = document.createElement('div')
+            div.classList.add('notification-body')
+            div.id = headers.VideoId
+
+            div.innerHTML = `
+                   <div onclick="updateQueryStringParameter('video','${headers.VideoId}')" class="holder">
+                     <svg class="pen" viewBox="0 0 24 24">
+                       <g width="24" height="24" viewBox="0 0 24 24">
+                         <path
+                           d="M14.06 7.6L16.4 9.94L6.34 20H4V17.66L14.06 7.6ZM14.06 6.19L3 17.25V21H6.75L17.81 9.94L14.06 6.19ZM17.61 4.05L19.98 6.42L18.84 7.56L16.47 5.19L17.61 4.05ZM17.61 2.63L15.06 5.18L18.85 8.97001L21.4 6.42L17.61 2.63Z">
+                         </path>
+                       </g>
+                     </svg>
+                     <span id="fileName">${file.name}</i></span>
+                   </div>
+                   <div class="holder">
+                     <span class="status" >100% uploaded</span>
+                     <button>
+                       <svg viewBox="0 0 24 24">                          
+                         <path d="M9,18.7l-5.4-5.4l0.7-0.7L9,17.3L20.6,5.6l0.7,0.7L9,18.7z" class="complete actiive">
+                         </path>
+                       </svg>
+                     </button>                    
+                 </div>`
+            nbc.insertBefore(div, nbc.children[0].nextSibling)
+            progressBar.style.width = `0%`
+            uploadStatusElement.innerText = `0% uploaded`
+            isUploading = false
+            processUploadQueue()
+          }
+        })
+
+        currentUpload[headers.VideoId] = upload
+        document.querySelector('.notification-body.top').classList.remove('hidden')
+        upload.start()
+      } catch (error) {
+        console.error('Error initiating upload:', error)
+        isUploading = false
+        processUploadQueue()
+      }
+    }
+
+    function handleThumbnailInput(e) {
+      const file = e.target.files[0]
+      const reader = new FileReader()
+      reader.onload = function(e) {
+        thumbnailContainer.classList.add("show")
+        thumbnailPreview.src = e.target.result
+      }
+      reader.readAsDataURL(file)
+    }
+
+    function tagInputHandler(e) {
+      if (typeof e === 'string' || e?.data === "," || e?.target?.value.includes(",")) {
+
+        const values = (typeof e === 'string' ? e : e.target.value)
+          .replace(/\s{2,}/g, " ")
+          .split(/\s*,\s*/)
+          .map((value) => {
+            if (e.target) e.target.value = ""
+            if (value.length < 2 || tags.includes(value)) return
+
+            tags.push(value)
+
+            updateTagLength()
+
+            var tag = document.createElement("div")
+            tag.className = "tag"
+            tag.id = "tag-" + tags.length
+            tag.innerHTML = `
+            <span>${value}</span>
+            <svg onclick="removeTag('${"tag-" + tags.length
+            }')" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M16.2401 9.17L13.4101 12L16.2401 14.83L14.8301 16.24L12.0001 13.41L9.17006 16.24L7.76006 14.83L10.5901 12L7.76006 9.17L9.17006 7.76L12.0001 10.59L14.8301 7.76L16.2401 9.17ZM4.93006 4.93C1.02006 8.84 1.02006 15.17 4.93006 19.07C8.84006 22.98 15.1701 22.98 19.0701 19.07C22.9801 15.16 22.9801 8.83 19.0701 4.93C15.1701 1.02 8.83006 1.02 4.93006 4.93ZM18.3601 5.64C21.8701 9.15 21.8701 14.86 18.3601 18.37C14.8501 21.88 9.14006 21.88 5.63006 18.37C2.12006 14.86 2.12006 9.15 5.63006 5.64C9.15006 2.13 14.8501 2.13 18.3601 5.64Z" />
+            </svg>`
+
+            var parentElement = tagInput.parentNode
+            parentElement.insertBefore(tag, tagInput)
+          })
+      }
+    }
+
+    function updateTagLength() {
+      taglength = tags.join("").length
+
+      const counter = document.querySelector(".tags .char-count")
+      counter.textContent = taglength + "/500"
+
+      if (taglength > 500) {
+        tagInputContainer.classList.add("error")
+        counter.classList.add("error")
+      } else {
+        tagInputContainer.classList.remove("error")
+        counter.classList.remove("error")
+      }
+    }
+
+    function removeTag(tag) {
+      const index = parseInt(tag.split("-")[1])
+      tags.splice(index - 1, 1)
+      document.getElementById(tag).remove()
+      updateTagLength()
+    }
+
+    function setCurrentPage() {
+      document.querySelectorAll(".upload-dialog .body .pages-items").forEach((body) => body.classList.add("hidden"))
+      submitButton.textContent = "Next"
+
+      document.querySelectorAll(".top-progress .line").forEach((line, index) => {
+        if (index < currentPage) line.classList.add("active")
+        else line.classList.remove("active")
+      })
+
+      const rightPart = document.querySelector(".upload-dialog .body .right")
+
+      switch (currentPage) {
+        case 1:
+          document.querySelector(".upload-dialog .body .heading.checks").classList.remove("hidden")
+          document.querySelector(".upload-dialog .body .left.checks").classList.remove("hidden")
+          break
+
+        case 2:
+          document.querySelector(".upload-dialog .body .heading.visibility").classList.remove("hidden")
+          document.querySelector(".upload-dialog .body .left.visibility").classList.remove("hidden")
+          rightPart.classList.remove("hidden")
+          submitButton.textContent = visibility === "public" ? "Publish" : "Save"
+          break
+
+        default:
+          document.querySelector(".upload-dialog .body .heading.details").classList.remove("hidden")
+          document.querySelector(".upload-dialog .body .left.details").classList.remove("hidden")
+          rightPart.classList.remove("hidden")
+          break
+
+      }
+    }
+
+    async function resetVideoPage() {
+      VideoForm.classList.add("upload")
+      uploadScreen.classList.remove('uploading')
+      uploadingAnimation.currentTime = 0;
+      videoPreview.innerHTML = ''
+      headerTitle.textContent = "Upload Video"
+      headerSavedStatus.textContent = ""
+      tagInput.value = ""
+      descriptionInput.value = ""
+      tagInput.value = ""
+      comments.on.checked = true
+      showViews.checked = false
+      visibilityGroup[0].checked = true
+      thumbnailContainer.classList.remove("show")
+      thumbnailOptions.forEach((img) => (img.src = ""))
+      document.querySelector(".thumbnail").classList.add("generating")
+
+      iconGroup.forEach(svg => svg.classList = [])
+
+      checksNote.classList.add('hidden')
+      checksCircle.classList.remove('failed')
+
+      fileName.textContent = ''
+
+      videoLink.textContent = ''
+      videoLink.href = ''
+
+      isSubmitting = false
+      VideoForm.classList.remove("submitting")
+
+
+
+      tags = []
+      taglength = 0
+      currentPage = 0
+      visibility = "private"
+      setCurrentPage()
+    }
+
+    async function onVideoUploaded(videoData, videoId) {
+
+      iconGroup.forEach(svg => svg.classList = [])
+
+      uploadedIcon.classList.add('success')
+      resolutionIcon.classList.add('success')
+      if (Math.max(...videoData.availableResolutions.match(/\d+/g)) >= 720)
+        resolutionIcon.classList.add('hd')
+
+      if (videoData.category == 'hentai' || videoData.category == 'adult') {
+        checkedIcon.classList.add('failed')
+        checksCircle.classList.add('failed')
+        checksNote.classList.remove('hidden')
+        videoStatus.textContent = 'Checks complete. There are some issues.'
+      } else {
+        checkedIcon.classList.add('success')
+        videoStatus.textContent = 'Checks complete. No issues found'
+      }
+
+      const videoPlayerResponse = await fetch("/api/player/" + videoId, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      videoPreview.innerHTML = `<iframe referrerpolicy="no-referrer" src="${videoPlayerResponse.url}" loading="lazy" style="border: none;" allow="accelerometer; gyroscope; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>`
+
+      thumbnailOptions.forEach(async (img, index) => {
+        if (index == 0 && videoData.thumbnailFileName) img.src = `http://localhost:3000/api/getThumbnail?videoId=${videoId}&thumbnailName=${videoData.thumbnailFileName.replace(".jpg", "")}`
+        else img.src = `http://localhost:3000/api/getThumbnail?videoId=${videoId}&thumbnailName=${"thumbnail_" + (index + 1)}`
+      })
+
+      document.querySelector(".thumbnail").classList.remove("generating")
+    }
+
+    async function getVideoData(videoId) {
+      const getVideoResponse = await fetch(
+        "/channel/videos/get-video/" + videoId, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      if (getVideoResponse.status != 200) {
+        console.error("Failed to get video data")
+        window.location.href = "/404"
+        return null
+      }
+
+      return await getVideoResponse.json()
+    }
+
+    async function initEditVideoPage() {
+      resetVideoPage()
+      VideoForm.classList.add("loading")
+
+      VideoForm.classList.remove("upload")
+
+      uploadedIcon.classList.add('processing')
+
+      const videoId = getQueryParam("video")
+
+      const socket = io()
+
+      const canEditResponse = await fetch("/channel/videos/can-edit/" + videoId, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      const videoData = await getVideoData(videoId)
+
+      if (canEditResponse.status != 200) {
+        console.warn("You cant EditResponse")
+        return window.location.href = "/404"
+      }
+      if (videoData.status != "Finished") socket.on(videoId, async (data) => {
+
+        if (data == "Queued")
+          resolutionIcon.classList.add('processing')
+
+        if (data == "Encoding...")
+          checkedIcon.classList.add('processing')
+
+        if (data == "Finished") onVideoUploaded(await getVideoData(videoId), videoId)
+        else videoStatus.textContent = data
+
+      })
+      else onVideoUploaded(videoData, videoId)
+
+
+      VideoForm.classList.remove("loading")
+      headerTitle.textContent = videoData.title
+      headerSavedStatus.textContent = "Saved as " + videoData.privacySettings
+      titleInput.value = videoData.title
+      descriptionInput.value = videoData.description
+      tagInputHandler(videoData.tags)
+      showViews.checked = videoData.viewsEnabled
+      fileName.textContent = videoData.filename
+
+      videoLink.textContent = `http://localhost:3000/watch?v=${videoData.uid}`
+      videoLink.href = `http://localhost:3000/watch?v=${videoData.uid}`
+
+      if (videoData.commentsStatus) comments.on.checked = true
+      else comments.off.checked = true
+
+      document.querySelector(".upload-dialog .visibility .option #" + videoData.privacySettings).checked = true
+
+      visibility = videoData.privacySettings
+    }
+
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search)
+      return urlParams.get(param)
+    }
+
+    function removeAllQueryParameters() {
+      const url = new URL(window.location.href)
+      url.search = ''
+      history.pushState({}, '', url)
+      refresh()
+    }
+
+    function updateQueryStringParameter(key, value) {
+      const url = new URL(window.location.href)
+      url.searchParams.set(key, value)
+      history.pushState({}, '', url)
+      refresh()
+    }
+
+    function removeQueryStringParameter(key) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete(key)
+      history.pushState({}, '', url)
+    }
+
+    function refresh() {
+      const d = getQueryParam('d')
+      const videoQuery = getQueryParam('video')
+
+      setPage('.sections .btn', 'sidenav .sections')
+
+      if (typeof setContentTab === 'function') {
+        setContentTab();
+      }
+
+      const UploadSection = document.getElementById('upload-section')
+
+      if (d || videoQuery) UploadSection.style.display = 'block'
+      else UploadSection.style.display = 'none'
+      if (videoQuery) initEditVideoPage()
+
+    }
+
+    function setPage(q1, q2) {
+      document.querySelectorAll(q1).forEach(btn => btn.classList.remove('active'))
+      document.querySelector(`${q2} #<%= page %>`).classList.add('active')
+    }
+
+    function redirect(path) {
+      history.pushState(null, '', '/studio/channel/<%= channel.uid %>' + path)
+      refresh()
+    }
+  </script>
+
+</body>
+
+</html>

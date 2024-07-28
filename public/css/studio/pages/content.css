@@ -1,0 +1,370 @@
+.main.content {
+    flex: 1;
+    height: 100%;
+}
+
+.main.content .top {
+    padding-left: 32px;
+    padding-top: 23px;
+    border-bottom: 1px solid var(--border-color-dark)
+}
+
+
+.main.content .top .heading {
+    font-family: "PT Sans", "Roboto", "Arial", sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.main.content .top .tabs {
+    margin-left: -6px;
+    display: flex;
+    height: 64px;
+    align-items: flex-end;
+}
+
+.main.content .top .tabs .btn {
+    text-align: center;
+    color: #adadad;
+    min-width: 48px;
+    margin-left: 8px;
+    margin-right: 32px;
+    display: flex;
+    height: 48px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    font-family: "PT Sans", "Roboto", "Arial", sans-serif;
+    align-items: center;
+    justify-content: center;
+    transition: all 300ms;
+}
+
+.main.content .top .tabs .btn:active {
+    background-color: var(--transparent-accent-15)
+}
+
+
+.main.content .top .tabs .btn.active {
+    position: relative;
+    color: var(--accent);
+}
+
+
+.main.content .top .tabs .btn.active::after {
+    background-color: var(--accent);
+    content: '';
+    width: 48px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.main.content .body {
+    position: relative;
+    height: 100%;
+}
+
+.main.content .scrollable {
+    overflow-y: scroll;
+    position: relative;
+    height: calc(100% - 184px);
+}
+
+
+.main.content .body .bar {
+    font-weight: 600;
+    color: var(--secondary-light);
+    font-size: 12px;
+    padding: 0 32px;
+    align-items: center;
+    display: flex;
+    height: 48px;
+    border-bottom: 1px solid #ffffff17;
+}
+
+
+.main.content .body .bar .child {
+    flex: 1 0 100px;
+}
+
+.main.content .body .bar> :nth-child(1) {
+    flex: 3 0 382px;
+}
+
+
+.main.content .body .videos .video {
+    display: flex;
+    align-items: center;
+}
+
+.main.content .body .videos .video .video-container {
+    height: 68px;
+    width: 120px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.main.content .body .videos .video img {
+    height: 100%;
+    width: 100%;
+}
+
+.main.content .body .videos .video .length {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    color: var(--primary-light);
+    align-items: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    position: absolute;
+    height: 16px;
+    padding: 0 4px;
+    margin: 4px;
+    background-color: var(--transparent-dark-80);
+    border-radius: 2px;
+}
+
+
+.main.content {
+    background: var(--tertiary-dark);
+    height: 100%;
+}
+
+.main.content .top {
+    padding-left: 32px;
+    padding-top: 23px;
+    border-bottom: 1px solid var(--border-color-dark)
+}
+
+.main.content .top .heading {
+    font-family: "PT Sans", "Roboto", "Arial", sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.main.content .top .tabs {
+    margin-left: -6px;
+    display: flex;
+    height: 64px;
+    align-items: flex-end;
+}
+
+.main.content .top .tabs .btn {
+    text-align: center;
+    min-width: 48px;
+    margin-left: 8px;
+    margin-right: 32px;
+    display: flex;
+    height: 48px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    font-family: "PT Sans", "Roboto", "Arial", sans-serif;
+    align-items: center;
+    justify-content: center;
+    transition: all 300ms;
+}
+
+.main.content .top .tabs .btn.active {
+    position: relative;
+    color: var(--accent);
+}
+
+
+.main.content .top .tabs .btn.active::after {
+    background-color: var(--accent);
+    content: '';
+    width: 48px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+.main.content .body .bar.r {
+    height: 14px;
+}
+
+.main.content .body .bar .child {
+    flex: 1 0 100px;
+}
+
+.main.content .body .bar> :nth-child(1) {
+    flex: 3 0 382px;
+}
+
+.main.content .body .topbar.bar> :nth-child(1) span {
+    padding-left: 5px;
+}
+
+.main.content .body .videos.bar {
+    height: 83px;
+    align-items: flex-start;
+}
+
+.main.content .body .videos .video {
+    height: 100%;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.main.content .body .videos .video img {
+    height: 68px;
+}
+
+.main.content .body .videos .video .info {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    margin-left: 16px;
+}
+
+.main.content .body .videos .video .btns {
+    display: none;
+}
+
+.main.content .body .videos .video .btns a {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+}
+
+
+.main.content .body .videos .video .title {
+    width: 90%;
+    position: absolute;
+    top: 15px;
+    height: 20px;
+    font-size: 13px;
+    color: var(--primary-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.main.content .body .videos .video .more {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main.content .body .videos .video .more p {
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: .011em;
+    font-size: 12px;
+    line-height: 16px;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    margin-top: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 32px;
+}
+
+.main.content .body .videos:hover {
+    background-color: var(--cover-color)
+}
+
+.main.content .body .videos:hover .btns {
+    margin-left: -5px;
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+}
+
+.main.content .body .videos .btns svg {
+    fill: var(--secondary-light);
+    margin-bottom: 15px;
+}
+
+.main.content .body .videos .btns svg:hover {
+    margin-bottom: 15px;
+    fill: var(--primary-light)
+}
+
+.main.content .body .videos:hover .more p {
+    display: none;
+}
+
+.main.content .body .visibility {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.main.content .body .videos .visibility svg {
+    fill: var(--transparent-light-60);
+}
+
+.main.content .body .videos .child {
+    padding-top: 10px;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--primary-light);
+}
+
+.main.content .body .videos .child.draft span {
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 2px;
+    height: 36px;
+    padding: 0 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.main.content .body .videos .child.draft span:active {
+    background: var(--transparent-accent-15);
+}
+
+
+.main.content.updating::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cover-color);
+}
+
+.main.content.updating::before {
+    content: '';
+    height: 38px;
+    width: 38px;
+    border: 4px solid var(--primary-light);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 24px);
+}

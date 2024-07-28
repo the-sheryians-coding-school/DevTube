@@ -1,0 +1,1204 @@
+/* General Form Styles */
+form {
+    position: relative;
+    height: 100%;
+}
+
+/* File Input and Label */
+input[type="file"] {
+    display: none;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+.upload-dialog-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: var(--cover-color)
+}
+
+.upload.uploading * {
+    pointer-events: none;
+}
+
+.upload.uploading p {
+    opacity: .5;
+}
+
+.upload .upload-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+}
+
+
+.upload .upload-icon video {
+    background-color: transparent;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 136px;
+    width: 136px;
+}
+
+.upload .videoInput-label {
+    display: block;
+    padding: 10px 15px;
+    background-color: var(--accent);
+    color: var(--primary-dark);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: "Roboto", "Noto", sans-serif;
+    letter-spacing: 0.01em;
+}
+
+.upload.uploading .videoInput-label {
+    background-color: var(--tertiary-light);
+    color: var(--primary-dark);
+}
+
+.videoInput-label:hover {
+    background-color: var(--transparent-accent-80);
+}
+
+
+.upload .text-info p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 23px;
+    margin-bottom: 26px;
+    font-size: 15px;
+}
+
+.upload .text-info span {
+    color: var(--secondary-light);
+    font-size: smaller;
+    margin-top: 7px;
+}
+
+.upload .tnc {
+    font-size: 12px;
+    color: var(--secondary-light);
+    text-align: center;
+    line-height: 14px;
+    margin-bottom: 12px;
+}
+
+.upload .tnc span {
+    color: var(--accent)
+}
+
+
+/* Notification Styles */
+.notification {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 50px;
+    right: 40px;
+    width: 450px;
+    background-color: var(--tertiary-dark);
+    border-radius: 5px;
+    z-index: 2;
+    overflow: hidden;
+    box-shadow: 0 2px 10px var(--cover-color);
+    box-shadow: var(--cover-color) 0px 5px 15px;
+}
+
+
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 30px;
+    color: var(--secondary-dark);
+    background-color: var(--primary-light);
+    font-size: 15px;
+}
+
+.notification button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.notification svg {
+    width: 20px;
+}
+
+.notification-header button svg {
+    width: 20px;
+    fill: var(--secondary-dark);
+}
+
+.notification-progress {
+    height: 4px;
+    background: #444;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s;
+}
+
+.notification-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 15px;
+}
+
+.notification-body:hover {
+    background-color: var(--cover-color);
+}
+
+.notification-body .holder {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+    max-width: 60%;
+}
+
+.holder #fileName {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.holder .pen {
+    width: 30px;
+}
+
+.holder button path.hidden {
+    display: none;
+}
+
+.notification-body span {
+    font-size: 14px;
+}
+
+.notification-body.hidden {
+    display: none;
+}
+
+.notification button svg path.complete {
+    fill: var(--accent);
+}
+
+/* Cancel Dialog Styles */
+.cancel-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    width: 100%;
+    height: 100%;
+    background: var(--cover-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cancel-dialog.hidden {
+    display: none;
+}
+
+.cancel-dialog .container {
+    overflow: hidden;
+    outline: none;
+    width: 384px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    max-height: 446px;
+    z-index: 15;
+    min-height: 164px;
+    background-color: var(--tertiary-dark);
+    border-radius: 6px;
+}
+
+.cancel-dialog .container h1 {
+    padding: 7px 8px 5px;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    font-size: 20px;
+    line-height: 28px;
+    margin: 12px 16px;
+}
+
+.cancel-dialog .container p {
+    padding-left: 24px;
+    padding-right: 24px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 24px;
+    padding-top: 7px;
+    min-height: 48px;
+}
+
+.cancel-dialog .container .options {
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.cancel-dialog .container button {
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 8px;
+    line-height: 20px;
+    margin-left: 8px;
+    border-radius: 4px;
+}
+
+.cancel-dialog .container button:active {
+    background: var(--transparent-accent-15);
+}
+
+/* Edit Video Modal */
+.upload-dialog {
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 1024px;
+    height: 90%;
+    background-color: var(--tertiary-dark);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.upload-dialog .upload {
+    height: 100%;
+    display: none;
+}
+
+.upload-dialog.upload {
+    display: block;
+}
+
+.upload-dialog.upload .top {
+    height: 100%;
+}
+
+.upload-dialog.upload .bottom {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.upload-dialog.upload .upload {
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-dialog.upload .footer,
+.upload-dialog.upload .loading,
+.upload-dialog.upload .header .status,
+.upload-dialog.upload .top-progress,
+.upload-dialog.upload .body {
+    display: none !important;
+}
+
+
+
+.upload-dialog.loading .header * {
+    display: none !important;
+}
+
+.upload-dialog.loading .body * {
+    display: none !important;
+}
+
+.upload-dialog.loading .top-progress * {
+    display: none !important;
+}
+
+.upload-dialog.loading .footer {
+    display: none !important;
+}
+
+.upload-dialog .loading {
+    display: none;
+}
+
+.upload-dialog.submitting .submitting-cover {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--transparent-light-15);
+    position: absolute;
+    z-index: 10;
+}
+
+.upload-dialog.loading .loading,
+.upload-dialog.submitting .loading {
+    z-index: 11;
+    top: 69px;
+    display: block;
+    width: 100%;
+    height: 7px;
+    background-color: var(--border-color-dark);
+    position: absolute;
+}
+
+.upload-dialog .loading .loader {
+    width: 80%;
+    height: 7px;
+    position: absolute;
+    top: 0;
+    left: 40%;
+    background-color: var(--transparent-light-70);
+    animation: loading 4s infinite;
+}
+
+@keyframes loading {
+    0% {
+        left: -80%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.upload-dialog .top-progress {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+.upload-dialog .top-progress .info {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 140px;
+    height: 70px;
+
+    border-radius: 4px;
+
+    color: var(--primary-light);
+    font-weight: 600;
+
+    margin: 0px 40px;
+}
+
+.upload-dialog .top-progress .info label {
+    margin-bottom: 5px;
+    height: 20px;
+}
+
+.upload-dialog .top-progress .info:hover {
+    background-color: var(--transparent-accent-20)
+}
+
+
+.upload-dialog .top-progress .circle {
+    appearance: none;
+    border: 4px solid var(--accent);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    transition: all .1s ease-in-out;
+}
+
+.upload-dialog .top-progress .circle.failed {
+    border: 4px solid var(--error-color);
+}
+
+.upload-dialog .top-progress .circle.failed:checked {
+    background-color: var(--error-color);
+}
+
+.upload-dialog .top-progress .circle:checked {
+    width: 19px;
+    height: 19px;
+    margin: 3px;
+    background-color: var(--accent);
+}
+
+.upload-dialog .top-progress .line {
+    height: 2px;
+    width: 200px;
+    position: absolute;
+    top: 69%;
+    left: -100%;
+    pointer-events: none;
+    background-color: var(--secondary-light);
+
+}
+
+.upload-dialog .top-progress .line.active {
+    background-color: var(--accent);
+}
+
+.upload-dialog .header {
+    display: flex;
+    height: 39px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1.5px solid var(--tertiary-dark);
+}
+
+.upload-dialog .footer {
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid var(--tertiary-dark);
+}
+
+.upload-dialog .footer .start {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    gap: 10px;
+}
+
+.upload-dialog .footer .start svg {
+    width: 24px;
+    fill: var(--transparent-light-25)
+}
+
+.upload-dialog .footer .start svg.success {
+    fill: var(--accent);
+}
+
+.upload-dialog .footer .start svg.failed {
+    fill: var(--error-color)
+}
+
+.upload-dialog .footer .start svg.processing {
+    fill: var(--accent);
+    animation: glowAnimation 1.3s infinite alternate;
+}
+
+.upload-dialog .footer #resolution .hd {
+    display: none;
+}
+
+.upload-dialog .footer #resolution.hd .sd {
+    display: none;
+}
+
+.upload-dialog .footer #resolution.hd .hd {
+    display: block;
+}
+
+@keyframes glowAnimation {
+    0% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: .8;
+    }
+}
+
+.upload-dialog .footer .start p {
+    font-size: 14px;
+    padding-left: 10px;
+    color: var(--secondary-light)
+}
+
+
+.upload-dialog .footer button {
+    background: var(--accent);
+    border: none;
+    font-size: 16px;
+    border-radius: 2px;
+    padding: 10px 25px;
+}
+
+.upload-dialog .header .title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.upload-dialog .header .right {
+    display: flex;
+    gap: 20px;
+}
+
+.upload-dialog .header .right .status {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    padding: 2px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--secondary-light);
+    background: var(--border-color-dark);
+    border-radius: 2px;
+    opacity: .8;
+}
+
+.upload-dialog .header .right .cancel {
+    width: 28px;
+    fill: var(--secondary-light);
+    cursor: pointer;
+}
+
+.upload-dialog .header .right .cancel:hover {
+    fill: var(--secondary-light)ba;
+}
+
+.upload-dialog .header .right .cancel.active {
+    fill: var(--secondary-light);
+}
+
+.upload-dialog .body {
+    display: flex;
+    flex-direction: column;
+    padding: 55px;
+    height: calc(100% - 175px);
+    overflow-y: scroll;
+    gap: 17px;
+}
+
+.upload-dialog .body.hidden {
+    display: none;
+}
+
+
+.upload-dialog .body .heading {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.upload-dialog .body .heading span {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.upload-dialog .body .reuse {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--accent);
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.upload-dialog .body .reuse:hover {
+    color: var(--transparent-accent-80);
+}
+
+.upload-dialog .body .main {
+    display: flex;
+    gap: 20px;
+}
+
+.upload-dialog .body .left {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.upload-dialog .body .left .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 13px 16px;
+    border: 1px solid var(--border-color-dark);
+    border-radius: 4px;
+}
+
+.upload-dialog .body .left .input-container:focus-within {
+    border-color: var(--accent);
+}
+
+.upload-dialog .body .left .input-container.error {
+    border-color: var(--error-color)
+}
+
+.input-container .outer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-container .label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-container .label-text {
+    font-size: 14px;
+    color: var(--secondary-light);
+}
+
+.input-container:focus-within .label-text {
+    color: var(--accent);
+}
+
+.input-container .textbox {
+    flex: 1;
+    color: var(--primary-light);
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    font-size: 16px;
+    padding-top: 4px;
+    box-shadow: none;
+}
+
+.input-container .textbox:active {
+    border: none;
+}
+
+.input-container .char-counter {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 14px;
+}
+
+.input-container .char-counter span {
+    color: tr
+}
+
+.input-container:focus-within .char-counter span {
+    color: var(--secondary-light);
+}
+
+.input-container.description .textbox {
+    width: 100%;
+    min-height: 138px;
+    resize: none;
+    font-family: "Roboto", "Noto", sans-serif;
+}
+
+.upload-dialog .body .right {
+    display: flex;
+    flex-direction: column;
+    width: 304px;
+    height: fit-content;
+    background-color: var(--cover-color);
+    border-radius: 4px;
+}
+
+.upload-dialog .body .right * {
+    margin: 0;
+}
+
+.upload-dialog .body .right .preview-container {
+    position: relative;
+    padding-top: 56.25%;
+    background-color: black;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.upload-dialog .body .right iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-dialog .body .right .main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.upload-dialog .body .right .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upload-dialog .body .right .info .label {
+    font-size: 12px;
+    padding: 3px 0px;
+    color: var(--secondary-light);
+}
+
+.upload-dialog .body .right .row .info .link {
+    font-size: 14px;
+    color: var(--accent);
+}
+
+.upload-dialog .body .right .row .info .name {
+    font-size: 16px;
+}
+
+.upload-dialog .body .right .row .copy {
+    width: 28px;
+    fill: var(--secondary-light);
+}
+
+.upload-dialog .body .right .row .copy:hover {
+    fill: var(--secondary-light)ba;
+}
+
+.sub-heading {
+    color: var(--primary-light);
+    padding: 0;
+    margin: 0;
+    font-weight: 600;
+    font-size: 17px;
+    margin-top: 25px;
+}
+
+.sub-info {
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--secondary-light);
+    line-height: 20px;
+
+}
+
+/* Thumbnail Styles */
+.thumbnail {
+    margin-top: 15px;
+}
+
+.thumbnail-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.thumbnail-preview img {
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail.show .thumbnail-preview img {
+    visibility: visible;
+}
+
+.thumbnail .thumbnail-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 129px;
+    height: 72px;
+    border: 1px dashed var(--tertiary-light);
+    border-radius: 2px;
+    font-size: 13px;
+    color: var(--secondary-light);
+    gap: 7px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.thumbnail.show .thumbnail-input {
+    border: 2px solid transparent;
+}
+
+.thumbnail .thumbnail-input:hover {
+    border: 1px dashed var(--secondary-light);
+}
+
+.thumbnail.show .thumbnail-input:hover {
+    border: 2px solid var(--secondary-light);
+}
+
+.thumbnail .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.thumbnail label {
+    cursor: pointer;
+}
+
+.thumbnail .thumbnail-selector label {
+    position: relative;
+}
+
+.thumbnail-selector {
+    display: flex;
+    gap: 7px;
+}
+
+.thumbnail.generating .thumbnail-selector {
+    display: none;
+}
+
+.thumbnail-selector label {
+    width: 129px;
+    height: 72px;
+    border-radius: 2px;
+    overflow: hidden;
+    /* border: 2px solid transparent; */
+}
+
+.thumbnail-selector label img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .7;
+}
+
+.thumbnail-selector label:hover img {
+    opacity: 1;
+}
+
+.select-thumbnail:checked+label {
+    border: 2px solid var(--secondary-light)
+}
+
+.select-thumbnail:checked+label img {
+    opacity: 1;
+}
+
+
+
+.thumbnail .thumbnail-skeleton {
+    display: none;
+}
+
+.thumbnail.generating .thumbnail-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.thumbnail .thumbnail-skeleton .holder {
+    width: 133px;
+    height: 76px;
+    background-color: black;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.thumbnail .thumbnail-skeleton .holder::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    animation: shimmer 1.5s linear infinite forwards;
+    background: linear-gradient(90deg, #00000000 0, #ffffff00 10%, #1f1f1f9e 35%, #1f1f1f9e 65%, #00000000 90%, #00000000 100%);
+}
+
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.upload-dialog .body .left .showmore .label {
+    display: inline;
+    padding: 8px 7px;
+    margin: -7px;
+    color: var(--accent);
+    font-size: 14px;
+    border-radius: 2px;
+    font-weight: 600;
+    transition: all .1s ease-in-out;
+}
+
+.upload-dialog .body .left .showmore .info {
+    color: var(--secondary-light);
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+
+.upload-dialog .body .left .showmore .label:active {
+    background-color: var(--transparent-accent-15)
+}
+
+.upload-dialog .body .left .showmore.active .info {
+    display: none;
+}
+
+.upload-dialog .body .left .showmore .more {
+    display: none;
+}
+
+.upload-dialog .body .left .showmore.active .more {
+    display: block;
+}
+
+.tags .outer {
+    flex-direction: row;
+}
+
+.tags .tag {
+    display: flex;
+    align-items: center;
+    background: var(--transparent-light-15);
+    padding: 5px 13px;
+    border-radius: 15px;
+    margin-right: 7px;
+}
+
+.tags .tag:hover {
+    background: var(--transparent-light-25);
+}
+
+.tag svg {
+    margin-left: 7px;
+    fill: var(--transparent-light-50)
+}
+
+.tags .tag svg:hover {
+    fill: var(--transparent-light-75)
+}
+
+.tags .outer {
+    flex-wrap: wrap;
+}
+
+.tags .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--secondary-light)a7;
+}
+
+.tags .bottom .char-count.error {
+    color: var(--error-color)
+}
+
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    color: var(--secondary-light);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.options input {
+    appearance: none;
+    display: block;
+    margin: 0px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    margin-right: 10px;
+    border: 2px solid var(--secondary-light);
+    cursor: pointer;
+    background-color: transparent;
+    background-image: -webkit-radial-gradient(#ffffff 0%, #ffffff 35%, #00000000 40%);
+    background-repeat: no-repeat;
+    outline: none
+}
+
+.options input {
+    background-position: 0 24px;
+}
+
+.options input:checked {
+    background-position: 0 0;
+}
+
+.views .view {
+    appearance: none;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: solid var(--secondary-light);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+
+.views .view:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--tertiary-dark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: all 0.1s ease-in-out;
+}
+
+.views .view::before {
+    content: '';
+    width: 0%;
+    height: 0%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 3px;
+
+    background-color: var(--primary-light);
+    transition: all 0.1s ease-in-out;
+}
+
+.views .view:checked:after {
+    transform: rotate(45deg) scale(1);
+}
+
+.views .view:checked:before {
+    width: 120%;
+    height: 120%;
+}
+
+.views .view:checked {
+    display: block;
+}
+
+.views {
+    display: flex;
+    align-items: center;
+}
+
+.views span {
+    vertical-align: middle;
+    color: var(--secondary-light);
+}
+
+
+.body .checks p,
+.body .visibility p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    max-width: 60%;
+    line-height: 22px;
+}
+
+
+.body .checks .danger .heading {
+    color: var(--error-color)
+}
+
+.body .checks .copyright {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color-dark)
+}
+
+.body .checks .heading {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.body .checks .note {
+    color: var(--tertiary-light)
+}
+
+.body .visibility .selector {
+    padding: 18px 20px;
+    border: 1px var(--primary-light) solid;
+    border-radius: 4px;
+    padding-bottom: 38px;
+
+}
+
+.body .visibility .selector .label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+
+}
+
+.body .visibility .selector .info {
+    font-size: 14px;
+}
+
+.body .visibility .option {
+    margin-top: 20px;
+    margin-bottom: 6px;
+    color: var(--primary-light);
+    font-weight: 500;
+}
+
+.body .visibility .options {
+    padding-left: 30px;
+}
+
+.body .visibility .options input {
+    width: 20px;
+    height: 20px;
+}
+
+.body .visibility .options .info {
+    margin-left: 33px;
+    font-size: 14px;
+    color: var(--secondary-light);
+}

@@ -1,0 +1,184 @@
+<style>
+  .video-main {
+    --margin: 16px;
+    --columns: 4;
+    width: 100%;
+    position: relative;
+  }
+
+  .video-main .videos-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-main .videos {
+    padding-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .video-main .videos .video {
+    position: relative;
+    margin-left: calc(var(--margin) /2);
+    margin-right: calc(var(--margin) /2);
+    margin-bottom: 40px;
+    width: calc(98% / var(--columns) - var(--margin) - .01px);
+  }
+
+  .video-main .videos .video .preview img {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .video-main .videos .video .info,
+  .video-main .videos .video .more {
+    display: flex;
+  }
+
+  .video-main .videos .video .info img {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  .video-main .videos .video .info {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: normal;
+    color: var(--transparent-light-70);
+  }
+
+  .video-main .video.video.skali {
+    width: 300px;
+  }
+
+  .video-main .videos .video .info .title {
+    color: var(--primary-light);
+
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+    overflow: hidden;
+    max-height: 44px;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .video-main .videos .video .more {
+    flex-direction: column;
+  }
+
+  .video-main .videos .video .more a {
+    color: var(--transparent-light-70);
+    flex-direction: column;
+  }
+
+  @media (max-width: 1420px) {
+    .video-main {
+      --columns: 3
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .video-main {
+      --columns: 2
+    }
+  }
+
+  @media (max-width: 750px) {
+    .video-main {
+      --columns: 1
+    }
+  }
+</style>
+
+<div class="video-main">
+  <div class="videos-container">
+    <div class="videos">
+      <div class="video skali first"> </div>
+      <div class="video skali"> </div>
+      <div class="video skali"> </div>
+      <div class="video skali"> </div>
+      <div class="video skali"> </div>
+    </div>
+  </div>
+  <template class="video-template">
+    <div class="video">
+      <a class="preview"> <img loading="lazy" src="" alt=""> </a>
+      <div class="info">
+        <a class="logo">
+          <img src="" alt="">
+        </a>
+        <div class="details">
+          <a class="title"></a>
+          <div class="more">
+            <a class="channel-name"></a>
+            <div class="view-and-timestamp"></div>
+          </div>
+        </div>
+        <div class="menu"></div>
+      </div>
+    </div>
+  </template>
+</div>
+
+<script>
+  let videoPage = 1;
+
+  const videoContainer = document.querySelector('.videos-container .videos');
+  const videoAnchor = document.querySelector('.videos-container .videos .video.skali.first');
+
+  function renderVideos(videos) {
+    videos.forEach(video => {
+      const videoElement = document.createElement('div')
+
+      const template = document.querySelector('.video-template');
+      const clone = document.importNode(template, true).content;
+
+      clone.querySelector('.video').id = 'id' + video._id;
+      clone.querySelector('.preview').href = `/watch?v=${video.uid}`
+      clone.querySelector('.preview img').src = `/api/getThumbnail?videoId=${video.videoId}&thumbnailName=${video.thumbnailFileName.replace(".jpg", "")}`;
+      clone.querySelector('.info img').src = video.channel.logoURL;
+      clone.querySelector('.info .logo').href = `/channel/${video.channel.uid}`
+      clone.querySelector('.details .title').textContent = video.title;
+      clone.querySelector('.details .title').href = `/watch?v=${video.uid}`
+      clone.querySelector('.details .channel-name').textContent = video.channel.name
+      clone.querySelector('.details .channel-name').href = `/channel/${video.channel.uid}`
+      clone.querySelector('.view-and-timestamp').textContent = `${formatNumber(video.views)} views  •  ${getTimestamp(video.uploadDate)}`
+
+      videoContainer.insertBefore(clone, videoAnchor)
+
+    });
+
+  }
+
+  const fetchVideos = async () => {
+    try {
+      const response = await fetch(`/api/videos?<%= query%>&page=${videoPage}`);
+      const videos = await response.json();
+
+      renderVideos(videos.items);
+
+      videoPage++;
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+  };
+
+  const videoObserver = new IntersectionObserver(async (entries) => {
+    if (entries[0].isIntersecting) {
+      await fetchVideos();
+    }
+  });
+
+  videoObserver.observe(videoAnchor);
+</script>

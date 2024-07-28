@@ -1,0 +1,594 @@
+.main-body {
+    overflow-y: scroll;
+    height: calc(100% - 56px);
+}
+
+
+.player-main {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    width: 100%;
+}
+
+.player-main .left {
+    flex: 3;
+    margin-right: 20px;
+}
+
+.player-main .right {
+    flex: 1;
+}
+
+.player-main .player-container {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    padding-top: 50%;
+    padding-top: 56.25%;
+    /* 16:9 aspect ratio (9 / 16 * 100) */
+    background-color: #000;
+}
+
+
+.player-main .player-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.player-main .top-fold {
+    padding-top: 12px;
+}
+
+
+.player-main .title {
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+
+.player-main .top-fold .action-bar {
+    display: flex;
+    padding-top: 12px;
+    margin-top: -4px;
+}
+
+.player-main .top-fold .action-bar .start {
+    flex: 1;
+}
+
+.player-main .top-fold .action-bar .start,
+.player-main .top-fold .action-bar .end,
+.player-main .top-fold .action-bar .end .reaction {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.player-main .top-fold .action-bar .end .reaction {
+    position: relative;
+}
+
+.player-main .top-fold .action-bar .channel-avatar {
+    height: 42.67px;
+    display: flex;
+}
+
+.player-main .top-fold .action-bar .channel-avatar img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    overflow: hidden;
+}
+
+
+.player-main .top-fold .action-bar .start .info {
+    margin-right: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-main .top-fold .action-bar .start .info .channel-name {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+}
+
+.player-main .top-fold .action-bar .start .info .subscribers {
+    color: var(--transparent-light-60);
+    margin-right: 4px;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+
+.player-main .top-fold .action-bar .end .btn {
+    background: var(--transparent-light-10);
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.player-main .top-fold .action-bar .end .reaction svg .filled {
+    display: none;
+}
+
+.player-main .top-fold .action-bar .end .reaction.like .like .filled,
+.player-main .top-fold .action-bar .end .reaction.dislike .dislike .filled {
+    display: block;
+}
+
+.player-main .top-fold .action-bar .end .reaction.like .like .outlined,
+.player-main .top-fold .action-bar .end .reaction.dislike .dislike .outlined {
+    display: none;
+}
+
+.player-main .top-fold .action-bar .end .reaction svg .filled.active {
+    display: block;
+}
+
+.player-main .top-fold .action-bar .end .reaction .btns {
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-main .top-fold .action-bar .end .reaction .btns:hover,
+.player-main .left .description .description-container .channel-buttons .btns .btn:hover,
+.player-main .left .comments-section .comment .input input:focus+.line .btns-container .btns .cancel:hover,
+.player-main .left .comments-section .comments .comment .reaction .btns svg:hover,
+.player-main .top-fold .action-bar .end .share:hover {
+    background-color: var(--transparent-light-15);
+}
+
+.player-main .top-fold .action-bar .end .reaction .btns:active,
+.player-main .left .description .description-container .channel-buttons .btns .btn:active,
+.player-main .left .comments-section .comments .comment .reaction .btns svg:active,
+.player-main .left .comments-section .comment .input input:focus+.line .btns-container .btns .cancel:active,
+.player-main .top-fold .action-bar .end .share:active {
+    background-color: var(--transparent-light-25);
+}
+
+.player-main .top-fold .action-bar .end .reaction .like svg {
+    margin-right: 6px;
+    margin-left: -6px;
+}
+
+.player-main .top-fold .action-bar .end .reaction .dislike svg {
+    margin-left: -4px;
+}
+
+.player-main .top-fold .action-bar .end .reaction .like span {
+    line-height: 36px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.player-main .top-fold .action-bar .end .reaction .bar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 24px;
+    width: 1px;
+}
+
+.player-main .top-fold .action-bar .end .share {
+    padding: 0 16px;
+    margin-left: 8px;
+}
+
+.player-main .top-fold .action-bar .end .share svg {
+    margin-left: -6px;
+    margin-right: 6px;
+}
+
+.player-main .left .description {
+    background: var(--transparent-light-10);
+    position: relative;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    font-weight: 400;
+    margin-bottom: 48px;
+}
+
+.player-main .left .description.less {
+    height: 80px;
+}
+
+.player-main .left .description .info-container {
+    height: 20px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--transparent-light-85);
+    display: flex;
+    gap: 6.98px;
+}
+
+.player-main .left .description .info-container .hash-tags a {
+    color: var(--accent);
+}
+
+.player-main .left .description.less .info-container .hash-tags a {
+    color: var(--transparent-light-50);
+}
+
+
+.player-main .left .description .description-container {
+    height: -webkit-fill-available;
+    overflow: hidden;
+}
+
+.player-main .left .description .description-container .rest {
+    white-space-collapse: preserve-breaks;
+    text-wrap: wrap;
+    color: var(--transparent-light-90);
+}
+
+.player-main .left .description .description-container .hashTags {
+    color: var(--accent);
+}
+
+.player-main .left .description .more-btn {
+    font-weight: 500;
+    margin-left: 6px;
+}
+
+
+.player-main .left .description .description-container .channel {
+    margin-top: 32px;
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.player-main .left .description .description-container .channel .channel-avatar {
+    margin-right: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-main .left .description .description-container .channel .channel-avatar img {
+    height: 36px;
+    width: 36px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.player-main .left .description .description-container .channel .info .channel-name {
+    color: var(--primary-light);
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 500;
+    overflow: hidden;
+    max-height: 26px;
+    -webkit-line-clamp: 1;
+}
+
+.player-main .left .description .description-container .channel .info .subscribers {
+    color: var(--transparent-light-60);
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    overflow: hidden;
+    max-height: 18px;
+    -webkit-line-clamp: 1;
+}
+
+
+.player-main .left .description .description-container .channel-buttons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 52px;
+}
+
+.player-main .left .description .description-container .channel-buttons .btns {
+    display: flex;
+    flex: 1
+}
+
+.player-main .left .description .description-container .channel-buttons .btns .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--transparent-light-15);
+    height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+    border-radius: 18px;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.player-main .left .description .description-container .channel-buttons .btns .btn svg {
+    margin-right: 6px;
+    margin-left: -6px;
+}
+
+.player-main .left .description .description-container .channel-buttons .dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background-color: var(--primary-light);
+    visibility: hidden;
+}
+
+.player-main .left .description .description-container .channel-buttons:hover .dot {
+    visibility: visible;
+}
+
+.player-main .left .description .more-btn::after {
+    content: "Show less";
+}
+
+.player-main .left .description.less .more-btn::after {
+    content: "...more";
+}
+
+.player-main .left .comments-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-main .left .comments-section .comments-count {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.player-main .left .comments-section .comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.player-main .left .comments-section .comment.not-logged * {
+    pointer-events: none;
+}
+
+.player-main .left .comments-section .comment .channel-avatar {
+    height: 40px;
+    width: 40px;
+    margin-right: 16px;
+    border-radius: 50%;
+}
+
+.player-main .left .comments-section .comment .input {
+    margin-right: 16px;
+    flex: 1;
+}
+
+.player-main .left .comments-section .comment .input textarea {
+    width: 100%;
+    appearance: none;
+    border: none;
+    background: none;
+    outline: none;
+    color: var(--primary-light);
+    position: relative;
+    font-size: 14px;
+    line-height: 20px;
+    height: 20px;
+    resize: none;
+    font-family: inherit;
+
+}
+
+.player-main .left .comments-section .comment .input .line {
+    margin-top: 1px;
+    height: .67px;
+    width: 100%;
+    background: var(--transparent-light-40);
+    position: relative;
+
+}
+
+.player-main .left .comments-section .comment .input .line .big {
+    content: ' ';
+    height: 2px;
+    width: 0%;
+    background: var(--primary-light);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0ms
+}
+
+.player-main .left .comments-section .comment .input textarea:focus+.line .big {
+    width: 100%;
+    transition: all 300ms ease-in-out
+}
+
+.player-main .left .comments-section .comment .input .btns-container {
+    display: none;
+}
+
+.player-main .left .comments-section .comment .input textarea:focus+.line .btns-container,
+.player-main .left .comments-section .comment .input textarea:invalid+.line .btns-container {
+    padding-top: 9.2px;
+    display: flex;
+}
+
+.player-main .left .comments-section .comment .input textarea+.line .btns-container .spacer {
+    flex: 1;
+}
+
+.player-main .left .comments-section .comment .input textarea+.line .btns-container .btns {
+    display: flex;
+}
+
+.player-main .left .comments-section .comment .input textarea+.line .btns-container .btns div {
+    padding: 0 16px;
+    height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+    border-radius: 18px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.player-main .left .comments-section .comment .input textarea+.line .btns-container .btns .comment {
+    background-color: var(--tertiary-light);
+    opacity: .3;
+}
+
+.player-main .left .comments-section .comment .input textarea:invalid+.line .btns-container .btns .comment {
+    background-color: var(--accent);
+    opacity: 1;
+    color: var(--primary-dark);
+}
+
+.player-main .left .comments-section .comments .comment {
+    display: flex;
+}
+
+.player-main .left .comments-section .comments .comment .side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.player-main .left .comments-section .comments .comment .channel-info {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    line-height: 20px;
+    height: 20px;
+    align-items: center;
+}
+
+.player-main .left .comments-section .comments .comment .handel {
+    font-size: 13px;
+}
+
+.player-main .left .comments-section .comments .comment .timestamp {
+    color: var(--transparent-light-60);
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.player-main .left .comments-section .comments .comment .comment-text {
+    line-height: 20px;
+    font-weight: 300;
+    font-size: 14px;
+    white-space: pre-line;
+}
+
+
+
+.player-main .left .comments-section .comments .comment .action-bar {
+    height: 32px;
+    margin-top: 4px;
+    margin-left: -6px;
+}
+
+.player-main .left .comments-section .comments .comment .action-bar,
+.player-main .left .comments-section .comments .comment .reaction .btns,
+.player-main .left .comments-section .comments .comment .reaction {
+    display: flex;
+    align-items: center;
+}
+
+.player-main .left .comments-section .comments .comment .reaction .btns svg {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.player-main .left .comments-section .comments .comment .reaction .likes {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--transparent-light-60);
+    margin-right: 6px
+}
+
+.player-main .left .comments-section .comments .comment .reply {
+    margin-left: 16px;
+    font-size: 12px;
+    line-height: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.player-main .left .comments-section .comments .comment .reaction svg .filled {
+    display: none;
+}
+
+.player-main .left .comments-section .comments .comment .reaction.like .like .filled,
+.player-main .left .comments-section .comments .comment .reaction.dislike .dislike .filled {
+    display: block;
+}
+
+.player-main .left .comments-section .comments .comment .reaction.like .like .outlined,
+.player-main .left .comments-section .comments .comment .reaction.dislike .dislike .outlined,
+.player-main .left .comments-section .comments .comment .side .comment.reply-comment {
+    display: none;
+}
+
+.player-main .left .comments-section .comments .comment .reaction svg .filled.active,
+.player-main .left .comments-section .comments .comment .input .btns-container,
+.player-main .left .comments-section .comments .comment .side .comment.reply-comment.open {
+    padding-top: 9.2px;
+    display: flex;
+}
+
+.player-main .left .comments-section .comments .comment .side .spacer {
+    flex: 1
+}
+
+.player-main .left .comments-section .comments .comment .channel-avatar-mini {
+    height: 24px;
+    width: 24px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 16px
+}
+
+
+@media (max-width: 1015px) {
+    .player-main .right {
+        display: none;
+    }
+
+    .player-main .left {
+        flex: 1;
+        margin-right: 0
+    }
+}
+
+
+#sentinel {
+    height: 10px;
+}

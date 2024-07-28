@@ -1,0 +1,135 @@
+<link rel="stylesheet" href="/css/devtube/components/createChannel.css" />
+
+<div class="container createChannelContainer">
+  <form action="/channel/create" class="create-channel-form" id="uploadForm" method="post" enctype="multipart/form-data">
+    <div class="header">
+      <h1>How you'll appear</h1>
+    </div>
+
+    <div class="desc"></div>
+
+    <div class="image">
+      <img class="imagePreview" src="https://ik.imagekit.io/technoaayush/Const/Frame_uXaqMEf0Bt.png"></img>
+    </div>
+
+    <div class="picture">
+      <input hidden type="file" name="image" id="imageInput" accept="image/*" />
+      <label for="imageInput"> Select picture </label>
+    </div>
+
+    <div class="input-fields">
+      <label class="text-input">
+        <space></space>
+        <div class="input">
+          <input type="text" name="name" placeholder="  " value="<%= channel?.name %>" id="name" min="1" max="50" required>
+          <label for="name">Name</label>
+        </div>
+      </label>
+
+      <label class="text-input handle">
+        <space></space>
+        <div class="input">
+          <span>@</span>
+          <input type="text" name="handle" id="handle" value="<%= channel?.handle %>" min="1" max="50" required>
+          <label for="handle">Handle</label>
+          <div class="checker">
+            <div class="loader"></div>
+            <svg class="error" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+            </svg>
+            <svg class="success" viewBox="0 0 24 24">
+              <path class="success" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+            </svg>
+          </div>
+        </div>
+      </label>
+      <p class="message">Handle needs 3 or more characters</p>
+    </div>
+    <div class="disclaimer">
+      <p>By clicking Create Channel you agree to <span>DevTube's Terms of Service</span>. Changes made to your name and profile picture are visible only on DevTube and not other services. <span>Learn more</span></p>
+    </div>
+
+    <div class="footer">
+      <a href="/">Cancel</a>
+      <button type="submit">Create channel </button>
+    </div>
+</div>
+
+<script>
+  const form = document.getElementById("uploadForm")
+  const container = document.querySelector(".createChannelContainer")
+
+  document.querySelector('#imageInput').addEventListener("change", function() {
+    const file = this.files[0]
+    const videoURL = URL.createObjectURL(file)
+    document.querySelector('.imagePreview').src = videoURL
+  })
+
+  const handleContainer = document.querySelector('.container .create-channel-form .input-fields .text-input.handle')
+
+  const handleInput = document.querySelector('.container .create-channel-form .input-fields .text-input input#handle')
+  const handleError = document.querySelector('.container .create-channel-form .input-fields .message')
+
+  let isHandleChecked = true
+  let timeout = null
+
+  const pattern = /^[a-zA-Z0-9._-]+$/;
+
+  function setCheckStatus(active, message, validity) {
+    handleContainer.classList.remove('success')
+    handleContainer.classList.remove('error')
+    handleContainer.classList.remove('checking')
+    handleContainer.classList.remove('inputError')
+    handleInput.setCustomValidity(validity || '')
+    if (message) handleError.innerHTML = message
+    if (active) handleContainer.classList.add(active)
+    clearTimeout(timeout)
+  }
+
+  handleInput.addEventListener('input', function() {
+    setCheckStatus()
+    if (handleInput.value.length > 2) {
+      if (!pattern.test(handleInput.value)) return setCheckStatus('inputError', 'Your Handle can only contain letters, numbers, periods (.), dashes (-), and underscores (_)', 'Handle is invalid')
+      clearTimeout(timeout)
+      isHandleChecked = false
+      timeout = setTimeout(async function() {
+        setCheckStatus('checking')
+        try {
+          const response = await fetch(`/api/checkHandle?handle=${handleInput.value}`)
+          const data = await response.json()
+          if (data.exists) setCheckStatus('error', `This handle isn't available. Here's one available: <span>${data.suggestedHandel}</span>`, 'Handle is already taken')
+          else setCheckStatus('success')
+          isHandleChecked = true
+        } catch (error) {
+          console.error('Error:', error)
+        }
+      }, 500)
+    } else setCheckStatus('inputError', 'Handle needs 3 or more characters', 'Handle needs 3 or more characters')
+
+  })
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault()
+    if (isHandleChecked) {
+      container.classList.add('creating')
+      const formData = new FormData(form)
+      const xhr = new XMLHttpRequest()
+      xhr.open("POST", form.action)
+      xhr.onload = () => {
+        if (xhr.status == 400) {
+          handleInput.setCustomValidity('Handle is already taken')
+          progressBar.style.width = "0%"
+        }
+        if (xhr.status == 200) {
+          const responseObj = JSON.parse(xhr.response)
+          window.location.href = `/channel/${responseObj.uid}`
+        }
+
+
+        if (xhr.status != 200)
+          progressBar.style.backgroundColor = "#ff00000e"
+      }
+      xhr.send(formData)
+    }
+  })
+</script>

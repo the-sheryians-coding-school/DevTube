@@ -1,0 +1,357 @@
+<link rel="stylesheet" href="/css/devtube/pages/player.css" />
+<% const formatNumber=num=> num >= 1e6 ? (num / 1e6).toFixed(2) + "M" : num >= 1e3 ? (num / 1e3).toFixed(2) + "K" : Math.floor(num).toString() %>
+
+<div class="player-main">
+  <div class="left">
+    <div class="player-container" style="padding-top: <%= video.aspect %>%">
+      <iframe referrerpolicy="no-referrer" src="/api/player/<%= video.videoId %>?autoplay=true" loading="lazy" style="border: none" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+    </div>
+    <div class="top-fold">
+      <p class="title"><%= video.title %></p>
+      <div class="action-bar">
+        <div class="start">
+          <div class="channel-avatar">
+            <img src="<%= video.channel.logoURL %>" alt="Channel Avatar" />
+          </div>
+          <div class="info">
+            <p class="channel-name"><%= video.channel.name %></p>
+            <p class="subscribers">
+              <%= `${video.channel.subscribers.length}
+              ${video.channel.subscribers.length> 1
+              ?'subscribers':'subscriber'}` %>
+            </p>
+          </div>
+          <div class="subscribe-button-container">
+            <%-
+            include('../components/subscribeBtn.ejs',{currentChannel:video.channel})
+            %>
+          </div>
+        </div>
+        <div class="end">
+          <div class="reaction btn <%= video.likes.includes(channel?.id)?'like': video.dislikes.includes(channel?.id) ? 'dislike':''%>">
+            <div onclick="react('like')" class="like btns">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path class="outlined" d="M7.00005 20H8.00005H17.4301C18.5001 20 19.4101 19.33 19.6201 18.39L20.9601 12.39C21.2301 11.15 20.1801 10 18.7701 10H14.5401L16.0601 5.06C16.3801 4.03 15.5401 3 14.3801 3C13.8001 3 13.2401 3.24 12.8601 3.65L7.00005 10H3.00005V20L7.00005 20ZM13.6001 4.33C13.7901 4.12 14.0801 4 14.3801 4C14.6401 4 14.8801 4.11 15.0101 4.3C15.0801 4.4 15.1601 4.56 15.1001 4.77L13.5801 9.71L13.1801 11L14.5401 11H18.7701C19.1801 11 19.5701 11.17 19.8001 11.46C19.9201 11.61 20.0501 11.86 19.9801 12.18L18.6401 18.18C18.5401 18.65 18.0301 19 17.4301 19H8.00005L8.00005 10.39L13.6001 4.33ZM4.00005 11H7.00005L7.00005 19L4.00005 19V11Z" />
+                <path class="filled" d="M17.4486 20.9508H8.01857L8.01857 9.86722L12.8786 4.60084C13.2586 4.19084 13.8186 3.95084 14.3986 3.95084C15.5586 3.95084 16.3986 4.98084 16.0786 6.01084L14.5586 10.9508H18.7886C20.1986 10.9508 21.2486 12.1008 20.9786 13.3408L19.6386 19.3408C19.4286 20.2808 18.5186 20.9508 17.4486 20.9508ZM7.01857 10.9508H3.01857V20.9508L7.01857 20.9508L7.01857 10.9508Z" />
+              </svg>
+              <span> <%= formatNumber(video.likes.length) %> </span>
+            </div>
+            <div class="bar"></div>
+            <div onclick="react('dislike')" class="dislike btns">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path class="outlined" d="M17.0025 3H16.0025H6.57251C5.50251 3 4.59251 3.67 4.38251 4.61L3.04251 10.61C2.77251 11.85 3.82251 13 5.23251 13H9.46251L7.94251 17.94C7.62251 18.97 8.46251 20 9.62251 20C10.2025 20 10.7625 19.76 11.1425 19.35L17.0025 13H21.0025V3H17.0025ZM10.4025 18.67C10.2125 18.88 9.92251 19 9.62251 19C9.36251 19 9.12251 18.89 8.99251 18.7C8.92251 18.6 8.84251 18.44 8.90251 18.23L10.4225 13.29L10.8225 12H9.46251H5.23251C4.82251 12 4.43251 11.83 4.20251 11.54C4.08251 11.39 3.95251 11.14 4.02251 10.82L5.36251 4.82C5.46251 4.35 5.97251 4 6.57251 4H16.0025V12.61L10.4025 18.67ZM20.0025 12H17.0025V4H20.0025V12Z" />
+                <path class="filled" d="M6.55144 3.04916H15.9814V14.1328L11.1214 19.3992C10.7414 19.8092 10.1814 20.0492 9.60144 20.0492C8.44144 20.0492 7.60144 19.0192 7.92144 17.9892L9.44144 13.0492H5.21144C3.80144 13.0492 2.75144 11.8992 3.02144 10.6592L4.36144 4.65916C4.57144 3.71916 5.48144 3.04916 6.55144 3.04916ZM16.9814 13.0492H20.9814V3.04916H16.9814V13.0492Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="share btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 5.63 20.66 12 15 18.37V14h-1c-3.96 0-7.14 1-9.75 3.09 1.84-4.07 5.11-6.4 9.89-7.1l.86-.13V5.63M14 3v6C6.22 10.13 3.11 15.33 2 21c2.78-3.97 6.44-6 12-6v6l8-9-8-9z"></path>
+            </svg>
+            <span>Share</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="description less">
+      <div class="info-container">
+        <span><%= formatNumber(video.views) %> views</span>
+        <span><%= video.timestamp %></span>
+        <span class="hash-tags">
+          <% video.hashTags.slice(0, 3).forEach(hashTag => { %>
+          <a href="<%= '/hashtag/' + hashTag.name %>"><%= '#' + hashTag.name %></a>
+          <% }); %>
+        </span>
+      </div>
+      <div class="description-container">
+        <span>
+          <% 
+            const regex = /(#\w+)/g;
+            let lastIndex = 0;
+            let match;
+
+            while (match = regex.exec(video.description)) {
+              %><%= video.description.trim().substring(lastIndex, match.index) %><%      
+              %><span class="hashTags"><%= match[0] %></span><%      
+              lastIndex = regex.lastIndex;
+            }      
+            %><span class="rest"><%= video.description.substring(lastIndex) %></span><%
+          %>
+        </span>
+        <div class="channel">
+          <div class="channel-avatar">
+            <img src="<%= video.channel.logoURL %>" alt="Channel Avatar" />
+          </div>
+          <div class="info">
+            <p class="channel-name"><%= video.channel.name %></p>
+            <p class="subscribers">
+              <%= `${video.channel.subscribers.length}
+              ${video.channel.subscribers.length> 1
+              ?'subscribers':'subscriber'}` %>
+            </p>
+          </div>
+        </div>
+        <div class="channel-buttons">
+          <div class="btns">
+            <a href="/channel/<%= video.channel.uid%>/videos" class="btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="m10 8 6 4-6 4V8zm11-5v18H3V3h18zm-1 1H4v16h16V4z"></path>
+              </svg>
+              <span>Videos</span>
+            </a>
+            <a href="/channel/<%= video.channel.uid%>/about" class="btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M4 20h14v1H3V6h1v14zM6 3v15h15V3H6zm2.02 14c.36-2.13 1.93-4.1 5.48-4.1s5.12 1.97 5.48 4.1H8.02zM11 8.5a2.5 2.5 0 015 0 2.5 2.5 0 01-5 0zm3.21 3.43A3.507 3.507 0 0017 8.5C17 6.57 15.43 5 13.5 5S10 6.57 10 8.5c0 1.69 1.2 3.1 2.79 3.43-3.48.26-5.4 2.42-5.78 5.07H7V4h13v13h-.01c-.38-2.65-2.31-4.81-5.78-5.07z"></path>
+              </svg>
+              <span>About</span>
+            </a>
+          </div>
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <div onclick="toggleLessDescription()" class="more-btn"></div>
+    </div>
+    <div class="comments-section">
+      <span class="comments-count"><%= video.comments.length%> Comments</span>
+      <div onclick="loginRedirect()" class="comment">
+        <img class="channel-avatar" src="<%= channel?.uid ? channel.logoURL : 'https://ik.imagekit.io/technoaayush/Const/Frame_uXaqMEf0Bt.png' %>" alt="">
+        <div class="input">
+          <textarea name="comment" minlength="5000" maxlength="5000" placeholder="Add a comment..." class="textbox scrollable " onInput="this.style.height='1px'; this.style.height = (this.scrollHeight)+'px';"></textarea>
+          <div class="line">
+            <div class="big"></div>
+            <div class="btns-container">
+              <div class="spacer"></div>
+              <div class="btns">
+                <div onclick="cancelComment()" class="cancel">Cancel</div>
+                <div onclick="comment()" class="comment">Comment</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comments">
+      </div>
+      <div id="sentinel"></div>
+    </div>
+  </div>
+  <div class="right"></div>
+
+  <template class="comment-template" style="display: none;">
+    <div class="comment">
+      <img class="channel-avatar" src="" alt="">
+      <div class="side">
+        <div class="channel-info">
+          <div class="handel"></div>
+          <div class="timestamp"></div>
+        </div>
+        <div class="comment-text"></div>
+        <div class="action-bar">
+          <div class="reaction btn">
+            <div class="like btns">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG paths for like button -->
+                <path class="outlined" d="M7.00005 20H8.00005H17.4301C18.5001 20 19.4101 19.33 19.6201 18.39L20.9601 12.39C21.2301 11.15 20.1801 10 18.7701 10H14.5401L16.0601 5.06C16.3801 4.03 15.5401 3 14.3801 3C13.8001 3 13.2401 3.24 12.8601 3.65L7.00005 10H3.00005V20L7.00005 20ZM13.6001 4.33C13.7901 4.12 14.0801 4 14.3801 4C14.6401 4 14.8801 4.11 15.0101 4.3C15.0801 4.4 15.1601 4.56 15.1001 4.77L13.5801 9.71L13.1801 11L14.5401 11H18.7701C19.1801 11 19.5701 11.17 19.8001 11.46C19.9201 11.61 20.0501 11.86 19.9801 12.18L18.6401 18.18C18.5401 18.65 18.0301 19 17.4301 19H8.00005L8.00005 10.39L13.6001 4.33ZM4.00005 11H7.00005L7.00005 19L4.00005 19V11Z" />
+                <path class="filled" d="M17.4486 20.9508H8.01857L8.01857 9.86722L12.8786 4.60084C13.2586 4.19084 13.8186 3.95084 14.3986 3.95084C15.5586 3.95084 16.3986 4.98084 16.0786 6.01084L14.5586 10.9508H18.7886C20.1986 10.9508 21.2486 12.1008 20.9786 13.3408L19.6386 19.3408C19.4286 20.2808 18.5186 20.9508 17.4486 20.9508ZM7.01857 10.9508H3.01857V20.9508L7.01857 20.9508L7.01857 10.9508Z" />
+              </svg>
+              <span class="likes"></span>
+            </div>
+            <div class="bar"></div>
+            <div class="dislike btns">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG paths for dislike button -->
+                <path class="outlined" d="M17.0025 3H16.0025H6.57251C5.50251 3 4.59251 3.67 4.38251 4.61L3.04251 10.61C2.77251 11.85 3.82251 13 5.23251 13H9.46251L7.94251 17.94C7.62251 18.97 8.46251 20 9.62251 20C10.2025 20 10.7625 19.76 11.1425 19.35L17.0025 13H21.0025V3H17.0025ZM10.4025 18.67C10.2125 18.88 9.92251 19 9.62251 19C9.36251 19 9.12251 18.89 8.99251 18.7C8.92251 18.6 8.84251 18.44 8.90251 18.23L10.4225 13.29L10.8225 12H9.46251H5.23251C4.82251 12 4.43251 11.83 4.20251 11.54C4.08251 11.39 3.95251 11.14 4.02251 10.82L5.36251 4.82C5.46251 4.35 5.97251 4 6.57251 4H16.0025V12.61L10.4025 18.67ZM20.0025 12H17.0025V4H20.0025V12Z" />
+                <path class="filled" d="M6.55144 3.04916H15.9814V14.1328L11.1214 19.3992C10.7414 19.8092 10.1814 20.0492 9.60144 20.0492C8.44144 20.0492 7.60144 19.0192 7.92144 17.9892L9.44144 13.0492H5.21144C3.80144 13.0492 2.75144 11.8992 3.02144 10.6592L4.36144 4.65916C4.57144 3.71916 5.48144 3.04916 6.55144 3.04916ZM16.9814 13.0492H20.9814V3.04916H16.9814V13.0492Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="reply">Reply</div>
+        </div>
+        <div class="comment reply-comment">
+          <img class="channel-avatar-mini" src="<%= channel?.uid ? channel.logoURL : 'https://ik.imagekit.io/technoaayush/Const/Frame_uXaqMEf0Bt.png' %>" alt="">
+          <div class="input">
+            <textarea name="comment" placeholder="Add a comment..." class="textbox scrollable " onInput="this.style.height='1px'; this.style.height = (this.scrollHeight)+'px';"></textarea>
+            <div class="line">
+              <div class="big"></div>
+              <div class="btns-container">
+                <div class="spacer"></div>
+                <div class="btns">
+                  <div class="cancel">Cancel</div>
+                  <div class="comment">Reply</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
+
+<script>
+  const isHandlingReaction = false
+  const reaction = document.querySelector('.player-main .top-fold .action-bar .end .reaction')
+  const likesCount = document.querySelector('.player-main .top-fold .action-bar .end .reaction .like span')
+  const commentInput = document.querySelector('.player-main .comments-section .comment .input textarea')
+  const commentCount = document.querySelector('.player-main .comments-section .comments-count')
+  const commentsContainer = document.querySelector('.player-main .comments-section .comments')
+
+  let page = 1;
+  const limit = 10;
+
+  if (!!!`<%=channel?.uid%>`) document.querySelector('.player-main .comments-section .comment ').classList.add('not-logged')
+
+  async function react(action) {
+    if (!!!`<%=channel?.uid%>`) return showSignInPopUp(reaction, {
+      title: 'Want to react to this video?',
+      message: 'Sign in to react to this video.'
+    })
+    if (!!!`<%=channel?.uid%>`) return
+    if (isHandlingReaction) return
+    try {
+      const response = await fetch(`/watch/react/<%= video.id%>?action=${action}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const {
+        likes
+      } = await response.json();
+
+      reaction.classList.remove(action === 'dislike' ? 'like' : 'dislike')
+
+      reaction.classList.toggle(action)
+      likesCount.textContent = likes
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function toggleLessDescription() {
+    document.querySelector('.player-main .left .description').classList.toggle('less')
+  }
+
+  function cancelComment() {
+    commentInput.value = ''
+  }
+
+  function toggleReply(id) {
+    if (!!!`<%=channel?.uid%>`) return loginRedirect()
+    document.querySelector(`#id${id} .comment.reply-comment textarea`).value = ''
+    document.querySelector(`#id${id} .comment.reply-comment`).classList.toggle('open')
+  }
+
+  async function comment() {
+    if (!!!`<%=channel?.uid%>`) return loginRedirect()
+    if (commentInput.value.trim() === '') return
+    try {
+      const response = await fetch(`/channel/videos/comment/<%= video.id%>`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: commentInput.value
+        }),
+      });
+
+      const {
+        comments,
+        comment
+      } = await response.json();
+
+      commentCount.textContent = `${comments} Comments`
+      renderComments(comment, true)
+      cancelComment()
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function renderComments(comments, isNew) {
+    comments.forEach(comment => {
+      const commentElement = document.createElement('div')
+
+      const template = document.querySelector('.comment-template');
+      const clone = document.importNode(template, true).content;
+
+      clone.querySelector('.comment').id = 'id' + comment._id;
+      clone.querySelector('.channel-avatar').src = isNew ? '<%=channel?.logoURL %>' : comment.channel.logoURL;
+      clone.querySelector('.handel').textContent = '@' + isNew ? '<%=channel?.handle %>' : comment.channel.handle;
+      clone.querySelector('.timestamp').textContent = getTimestamp(comment.postedDate);
+      clone.querySelector('.comment-text').textContent = comment.text
+      clone.querySelector('.like .likes').textContent = formatNumber(comment.likes.length)
+
+      const channelId = '<%= channel?.id%>'
+
+
+      if (channelId)
+        clone.querySelector('.reaction').classList.add(comment.likes.includes(channelId) ? 'like' : comment.dislikes.includes(channelId) ? 'dislike' : 'none')
+      clone.querySelector('.like svg').setAttribute('onclick', `reactComment('like', '${comment._id}')`)
+      clone.querySelector('.dislike svg').setAttribute('onclick', `reactComment('dislike', '${comment._id}')`)
+
+      clone.querySelector('.comment.reply-comment .cancel').setAttribute('onclick', `toggleReply('${comment._id}')`)
+      clone.querySelector('.reply').setAttribute('onclick', `toggleReply('${comment._id}')`)
+
+      if (isNew) commentsContainer.insertBefore(clone, commentsContainer.firstChild);
+      else commentsContainer.appendChild(clone)
+
+    });
+  }
+
+  async function reactComment(action, id) {
+    if (!!!`<%=channel?.uid%>`) return loginRedirect()
+    if (isHandlingReaction) return
+    try {
+      const response = await fetch(`/comment/react/${id}?action=${action}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const {
+        error,
+        likes
+      } = await response.json();
+
+      const reaction = document.querySelector(`#id${id} .reaction`)
+
+      reaction.className = 'reaction'
+      reaction.classList.toggle(action)
+
+      document.querySelector(`#id${id} .like .likes`).textContent = likes
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`/channel/videos/<%= video.id%>/comments?page=${page}&limit=${limit}`);
+      const comments = await response.json();
+
+
+      // Render comments to UI (e.g., append to existing comments list)
+      renderComments(comments);
+
+      page++; // Increment page for next request
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  const sentinel = document.getElementById('sentinel');
+  const observer = new IntersectionObserver(async (entries) => {
+    if (entries[0].isIntersecting) {
+      await fetchComments();
+    }
+  });
+
+  observer.observe(sentinel);
+
+  fetchComments();
+</script>

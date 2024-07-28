@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+:root {
+    --primary-dark: rgb(15, 15, 15);
+
+    --secondary-dark: rgb(34, 34, 34);
+
+    --tertiary-dark: rgb(43, 43, 43);
+
+    --primary-light: rgb(240, 240, 240);
+
+    --secondary-light: rgb(140, 140, 140);
+
+    --tertiary-light: rgb(110, 110, 110);
+
+    --accent: rgb(0, 255, 200);
+    --transparent-accent-15: rgba(0, 255, 200, .15);
+    --transparent-accent-20: rgba(0, 255, 200, .2);
+    --transparent-accent-80: rgba(0, 255, 200, .8);
+
+    --transparent-light-10: rgba(255, 255, 255, 0.10);
+    --transparent-light-15: rgba(255, 255, 255, 0.15);
+    --transparent-light-25: rgba(255, 255, 255, 0.25);
+    --transparent-light-40: rgba(255, 255, 255, 0.40);
+    --transparent-light-50: rgba(255, 255, 255, 0.50);
+    --transparent-light-60: rgba(255, 255, 255, 0.60);
+    --transparent-light-70: rgba(255, 255, 255, 0.70);
+    --transparent-light-75: rgba(255, 255, 255, 0.75);
+    --transparent-light-80: rgba(255, 255, 255, 0.80);
+    --transparent-light-85: rgba(255, 255, 255, 0.85);
+
+    --transparent-dark-80: rgba(0, 0, 0, 0.80);
+
+    --border-color: rgba(255, 255, 255, 0.250);
+    --border-color-dark: rgba(255, 255, 255, 0.100);
+
+    --shadow-color: rgba(0, 0, 0, 0.070);
+
+    --cover-color: rgba(0, 0, 0, 0.3);
+
+    --cover-color-light: rgba(255, 255, 255, 0.1);
+
+    --error-color: rgb(255, 0, 50);
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-dark);
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    color: white;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+svg {
+    fill: white;
+    height: 24px;
+}
+
+img {
+    object-fit: cover;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+.row {
+    position: relative;
+    display: flex;
+}
+
+.column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.scrollable {
+    overflow-y: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 7px;
+    background: transparent;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    background: transparent
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background: var(--tertiary-light);
+    cursor: pointer;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-light);
+}
+
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+#__popUpBG {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 15;
+    display: none;
+}
+
+#__popUpBG.show {
+    display: block;
+}
+
+#___loginPopup {
+    position: absolute;
+    width: 378px;
+    height: 174px;
+    background-color: var(--tertiary-dark);
+    z-index: 20;
+    flex-direction: column;
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(0, 0, 0, .4);
+}
+
+#___loginPopup.top {
+    top: 0;
+    transform: translate(0, -100%);
+}
+
+#___loginPopup.bottom {
+    bottom: 0;
+    transform: translate(0, 100%);
+}
+
+#___loginPopup.top.left {
+    transform: translate(-100%, -100%);
+}
+
+#___loginPopup.bottom.left {
+    transform: translate(-100%, 100%);
+}
+
+
+#___loginPopup.left {}
+
+
+#___loginPopup .title {
+    display: block;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 400;
+    padding: 0 24px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    pointer-events: none;
+}
+
+#___loginPopup .message {
+    display: block;
+    margin: 4px 0 32px;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    padding: 0 24px;
+    margin-top: 4px;
+    margin-bottom: 32px;
+    pointer-events: none;
+    color: var(--transparent-light-60);
+}
+
+#___loginPopup a {
+    position: relative;
+    padding: 8px 8px 8px 24px;
+    margin: 0;
+    display: flexbox;
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    justify-content: flex-start;
+    align-items: center;
+    flex: none;
+    font-weight: 500;
+    color: var(--accent);
+}

@@ -1,0 +1,29 @@
+.hashtag-main {
+    --margin: 16px;
+    --columns: 4;
+    width: 100%;
+    position: relative;
+}
+
+.hashtag-main header {
+    margin-left: 35px;
+}
+
+.hashtag-main header .title {
+    font-size: 36px;
+    line-height: 50px;
+    font-weight: 700;
+    overflow: hidden;
+    display: block;
+    max-height: 100px;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+}
+
+.hashtag-main header .info {
+    line-height: 18px;
+    font-weight: 300;
+    color: var(--transparent-light-60);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

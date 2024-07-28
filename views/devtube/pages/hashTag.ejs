@@ -1,0 +1,20 @@
+<% const formatNumber=num=> num >= 1e6 ? (num / 1e6).toFixed(2) + "M" : num >= 1e3 ? (num / 1e3).toFixed(2) + "K" : Math.floor(num).toString() %>
+<link rel="stylesheet" href="/css/devtube/pages/hashtag.css">
+
+<div class="hashtag-main">
+  <header>
+    <div class="title">#</div>
+    <% if(hashTag?.name) {%>
+    <div class="info"><%= `${formatNumber(hashTag.videos.length)} ${hashTag.videos.length >1 ?'videos':'video'} • ${formatNumber(hashTag.channels.length)} ${hashTag.channels.length >1 ?'channels':'channel'}` %> <%=  %> </div>
+    <% } %>
+  </header>
+
+  <%- include('../components/contents.ejs',{
+    padding:' 0 35px',
+    query:"tag="+hashTag.name    
+  })%>
+
+</div>
+<script>
+  document.querySelector('.hashtag-main .title').textContent = '#' + window.location.pathname.split('/')[2]
+</script>

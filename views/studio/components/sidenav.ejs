@@ -1,0 +1,74 @@
+<sidenav class="minimize">
+  <div class="main">
+    <div class="channel-info">
+      <div class="img">
+        <img class="logo" src="<%= channel.logoURL %>" alt="logo">
+        <a href="/channel">
+          <svg viewBox="0 0 24 24">
+            <path fill="white" d="M21,21H3V3h9v1H4v16h16v-8h1V21z M15,3v1h4.32l-8.03,8.03L12,12.74l8-8V9h1V3H15z"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="text">
+        <p class="label">Your channel </p>
+        <p class="name"><%= channel.name %></p>
+      </div>
+    </div>
+    <div class="sections">
+      <a href="/studio/channel/<%= channel.uid %>" class="btn" id="dashboard">
+        <svg viewBox="0 0 24 24">
+          <path d="M11 3H3V13H11V3ZM21 11H13V21H21V11ZM11 15H3V21H11V15ZM13 3V9H21V3H13Z" class="filled"></path>
+          <path d="M10 16V20H4V16H10ZM11 15H3V21H11V15ZM20 4V8H14V4H20ZM21 3H13V9H21V3ZM3 3V13H11V3H3ZM10 12H4V4H10V12ZM13 11V21H21V11H13ZM20 20H14V12H20V20Z" class="outlined"></path>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="/studio/channel/<%= channel.uid %>/content" class="btn" id="content">
+        <svg viewBox="0 0 24 24">
+          <path d="M11 6.99982V13.9998L17 10.4998L11 6.99982Z" class="outlined"></path>
+          <path d="M18 20.9998H3V5.99982H4V19.9998H18V20.9998ZM21 2.99982H6V17.9998H21V2.99982ZM7 3.99982H20V16.9998H7V3.99982Z" class="outlined"></path>
+          <path d="M4 5.99982H3V20.9998H18V19.9998H4V5.99982Z" class="filled"></path>
+          <path d="M6 2.99982V17.9998H21V2.99982H6ZM11 13.9998V6.99982L17 10.4998L11 13.9998Z" class="filled"></path>
+
+        </svg>
+        <span>Content</span>
+      </a>
+      <a href="/studio/channel/<%= channel.uid %>/analytics" class="btn" id="analytics">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 17H7V10H9V17ZM13 7H11V17H13V7ZM17 14H15V17H17V14ZM20 4H4V20H20V4ZM21 3V21H3V3H21Z" class="outlined"></path>
+          <path d="M3 3V21H21V3H3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V14H17V17Z" class="filled"></path>
+        </svg>
+        <span>Analytic</span>
+      </a>
+      <a href="/studio/channel/<%= channel.uid %>/comments" class="btn" id="comments">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 7H16V9H8V7ZM8 13H13V11H8V13ZM5 3V16H15H15.41L15.7 16.29L19 19.59V3H5ZM4 2H20V22L15 17H4V2Z" class="outlined"></path>
+          <path d="M4 2V17H15L20 22V2H4ZM8 11H13V13H8V11ZM8 7H16V9H8V7Z" class="filled"></path>
+        </svg>
+        <span>Comments</span>
+      </a>
+      <a href="/studio/channel/<%= channel.uid %>/editing" class="btn" id="customization">
+        <svg viewBox="0 0 24 24">
+          <path d="M6.71 7.2L7.89 5.1L6.71 3L8.81 4.18L10.91 3L9.74 5.1L10.92 7.2L8.82 6.02L6.71 7.2ZM18.9 14.26L16.8 13.08L17.98 15.18L16.8 17.28L18.9 16.1L21 17.28L19.82 15.18L21 13.08L18.9 14.26ZM21 3L18.9 4.18L16.8 3L17.98 5.1L16.8 7.2L18.9 6.02L21 7.2L19.82 5.1L21 3ZM17.14 10.02L6.15 21L3 17.85L14 6.85L17.14 10.02ZM6.15 19.59L13.7 12.04L11.96 10.3L4.41 17.85L6.15 19.59Z" class="outlined"></path>
+          <path d="M8.81 6.03L10.91 7.21L9.74 5.1L10.91 3L8.81 4.18L6.71 3L7.89 5.1L6.71 7.2L8.81 6.03ZM18.9 14.26L16.8 13.08L17.98 15.18L16.8 17.28L18.9 16.1L21 17.28L19.82 15.18L21 13.08L18.9 14.26ZM21 3L18.9 4.18L16.8 3L17.98 5.1L16.8 7.2L18.9 6.02L21 7.2L19.82 5.1L21 3ZM17.14 10.02L14 6.85L3 17.85L6.15 21L17.14 10.02ZM13.72 12.06L11.94 10.28L13.99 8.23L15.77 10.01L13.72 12.06Z" class="filled"></path>
+        </svg>
+        <span>Customization</span>
+      </a>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="sections">
+      <div class="btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,8c-2.21,0-4,1.79-4,4s1.79,4,4,4s4-1.79,4-4 S14.21,8,12,8L12,8z M13.22,3l0.55,2.2l0.13,0.51l0.5,0.18c0.61,0.23,1.19,0.56,1.72,0.98l0.4,0.32l0.5-0.14l2.17-0.62l1.22,2.11 l-1.63,1.59l-0.37,0.36l0.08,0.51c0.05,0.32,0.08,0.64,0.08,0.98s-0.03,0.66-0.08,0.98l-0.08,0.51l0.37,0.36l1.63,1.59l-1.22,2.11 l-2.17-0.62l-0.5-0.14l-0.4,0.32c-0.53,0.43-1.11,0.76-1.72,0.98l-0.5,0.18l-0.13,0.51L13.22,21h-2.44l-0.55-2.2l-0.13-0.51 l-0.5-0.18C9,17.88,8.42,17.55,7.88,17.12l-0.4-0.32l-0.5,0.14l-2.17,0.62L3.6,15.44l1.63-1.59l0.37-0.36l-0.08-0.51 C5.47,12.66,5.44,12.33,5.44,12s0.03-0.66,0.08-0.98l0.08-0.51l-0.37-0.36L3.6,8.56l1.22-2.11l2.17,0.62l0.5,0.14l0.4-0.32 C8.42,6.45,9,6.12,9.61,5.9l0.5-0.18l0.13-0.51L10.78,3H13.22 M14,2h-4L9.26,4.96c-0.73,0.27-1.4,0.66-2,1.14L4.34,5.27l-2,3.46 l2.19,2.13C4.47,11.23,4.44,11.61,4.44,12s0.03,0.77,0.09,1.14l-2.19,2.13l2,3.46l2.92-0.83c0.6,0.48,1.27,0.87,2,1.14L10,22h4 l0.74-2.96c0.73-0.27,1.4-0.66,2-1.14l2.92,0.83l2-3.46l-2.19-2.13c0.06-0.37,0.09-0.75,0.09-1.14s-0.03-0.77-0.09-1.14l2.19-2.13 l-2-3.46L16.74,6.1c-0.6-0.48-1.27-0.87-2-1.14L14,2L14,2z"></path>
+        </svg>
+        <span>Settings</span>
+      </div>
+      <div class="btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M13,14h-2v-2h2V14z M13,5h-2v6h2V5z M19,3H5v16.59l3.29-3.29L8.59,16H9h10V3 M20,2v15H9l-5,5V2H20L20,2z"></path>
+        </svg>
+        <span>Send feedback</span>
+      </div>
+    </div>
+  </div>
+</sidenav>

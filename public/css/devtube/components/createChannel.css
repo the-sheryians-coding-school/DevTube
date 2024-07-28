@@ -1,0 +1,334 @@
+.createChannelCover {
+    background: var(--cover-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.container {
+    background-color: var(--secondary-dark);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 12px;
+    z-index: 15;
+    overflow: hidden;
+}
+
+.creating.container::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    content: '';
+    background: var(--cover-color-light);
+    height: 100%;
+    width: 100%;
+    z-index: 20;
+}
+
+
+.creating.container::before {
+    content: '';
+    height: 48px;
+    width: 48px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    display: block;
+    border: 4px solid var(--primary-light);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.container .create-channel-form {
+    height: 600px;
+    width: 738px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .create-channel-form .header {
+    height: 63px;
+    text-align: left;
+    justify-content: center;
+    display: flexbox;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .create-channel-form .header h1 {
+    color: var(--primary-light);
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    margin-left: 24px;
+}
+
+.container .create-channel-form .desc {
+    padding: 28px 140px 0;
+}
+
+.container .create-channel-form .image {
+    margin-top: 36px;
+    display: flex;
+    justify-content: center;
+}
+
+.container .create-channel-form .image .imagePreview {
+    width: 120px;
+    height: 120px;
+    margin: 0 8px 6px 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.container .create-channel-form .picture {
+    margin: 16px 0;
+    color: var(--accent);
+    display: flex;
+    justify-content: center;
+    border-radius: 55px;
+    overflow: hidden;
+}
+
+.container .create-channel-form .picture :hover {
+    background: var(--transparent-accent-15)
+}
+
+.container .create-channel-form .picture :active {
+    background: var(--transparent-accent-20)
+}
+
+.container .create-channel-form .picture label {
+    padding: 0 16px;
+    height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+    border-radius: 18px;
+}
+
+.container .create-channel-form .input-fields {
+    padding: 0 140px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+}
+
+
+
+.container .create-channel-form .input-fields .text-input {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color-dark);
+    padding: 4px 8px;
+    position: relative;
+
+    height: 46px;
+
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+}
+
+.container .create-channel-form .input-fields .text-input space {
+    height: 20px;
+}
+
+.container .create-channel-form .input-fields .text-input .input {
+    height: 24px;
+    position: relative;
+    display: flex;
+}
+
+
+.container .create-channel-form .input-fields .text-input input {
+    color: var(--primary-light);
+    appearance: none;
+    background: transparent;
+    outline: none;
+    border: none;
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 400;
+    flex: 1;
+    font-family: inherit;
+}
+
+.container .create-channel-form .input-fields .text-input label {
+    transition: top 0.3s ease, font-size 0.3s ease;
+    position: absolute;
+    font-size: 12px;
+    left: 0;
+    top: -20px;
+    color: var(--secondary-light);
+}
+
+.container .create-channel-form .input-fields .text-input input:placeholder-shown+label {
+    color: var(--secondary-light);
+    font-size: 16px;
+    top: 0px;
+}
+
+.container .create-channel-form .input-fields .text-input:active,
+.container .create-channel-form .input-fields .text-input:focus-within {
+    border-color: var(--accent);
+}
+
+
+.container .create-channel-form .input-fields .text-input:focus-within label {
+    color: var(--accent);
+}
+
+.container .create-channel-form .input-fields .text-input:active label {
+    color: var(--accent);
+}
+
+.container .create-channel-form .input-fields .text-input.handle {
+    margin-top: 12px;
+}
+
+
+.container .create-channel-form .input-fields .error.active {
+    display: block;
+}
+
+.container .create-channel-form .input-fields .text-input.handle .checker {
+    position: absolute;
+    right: 8px;
+    bottom: 2px;
+}
+
+.container .create-channel-form .input-fields .text-input.handle svg {
+    display: none;
+}
+
+.container .create-channel-form .input-fields .text-input.handle.success svg.success {
+    fill: var(--accent);
+    display: block;
+}
+
+.container .create-channel-form .input-fields .text-input.handle.error svg.error {
+    fill: var(--error-color);
+    display: block;
+}
+
+.container .create-channel-form .input-fields .text-input.handle.checking .loader {
+    height: 20px;
+    width: 20px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    fill: var(--error-color);
+    display: block;
+    border: 2px solid var(--secondary-light);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+
+.container .create-channel-form .input-fields p.message {
+    margin-top: 4px;
+    color: var(--secondary-light);
+    font-size: 12px;
+    line-height: 18px;
+    visibility: hidden;
+}
+
+.container .create-channel-form .input-fields .inputError.handle {
+    border-color: var(--error-color);
+}
+
+.container .create-channel-form .input-fields .inputError.handle label {
+    color: var(--error-color);
+}
+
+.container .create-channel-form .input-fields .error.handle+.message,
+.container .create-channel-form .input-fields .inputError.handle+.message {
+    visibility: visible;
+}
+
+.container .create-channel-form .disclaimer {
+    padding: 0 140px;
+    font-size: 10px;
+    color: var(--secondary-light);
+}
+
+.container .create-channel-form .disclaimer span {
+    color: var(--accent);
+    line-height: 16px;
+}
+
+.container .create-channel-form .footer {
+    border-top: 1px solid var(--yt-spec-10-percent-layer);
+    height: 52px;
+    margin-top: 16px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+
+    position: fixed;
+    bottom: 0;
+}
+
+.container .create-channel-form .footer a {
+    text-decoration: none;
+    margin-left: auto;
+}
+
+.container .create-channel-form .footer a:hover {
+    background-color: var(--transparent-light-15);
+}
+
+.container .create-channel-form .footer a:active {
+    background-color: var(--transparent-light-25);
+}
+
+.container .create-channel-form .footer button:hover {
+    background-color: var(--transparent-accent-15);
+}
+
+.container .create-channel-form .footer button:active {
+    background-color: var(--transparent-accent-20);
+}
+
+.container .create-channel-form .footer * {
+    padding: 0 16px;
+    height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+    border-radius: 18px;
+    font-family: inherit;
+
+}
+
+
+button {
+    color: var(--accent);
+    background: none;
+    border: none;
+    border-radius: 100cm;
+}
+
+

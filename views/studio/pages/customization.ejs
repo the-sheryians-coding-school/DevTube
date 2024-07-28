@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="/css/studio/pages/customization.css" />
+
+
+<div class="main customization">
+  <form id="editChannelForm" action="/channel/edit" method="POST" enctype="multipart/form-data">
+    <div class="header">
+      <div class="title">Channel customization</div>
+      <div class="publish-container ">
+        <div class="cancel btn ">Cancel</div>
+        <button class="publish btn" type="submit">Publish</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="customization-section scrollable ">
+      <div class="input-field">
+        <span class="label">Name</span>
+        <span class="detail">Choose a channel name that represents you and your content. Changes made to your name and picture are visible only on YouTube and not other Google services. You can change your name twice in 14 days. </span>
+        <input class="input" value="<%= channel.name %>" name="name" placeholder="Enter channel name" type="text">
+      </div>
+      <div class="input-field">
+        <span class="label">Handle</span>
+        <span class="detail">Choose your unique handle by adding letters and numbers. You can change your handle back within 14 days. Handles can be changed twice every 14 days. </span>
+        <div class="handle-container">
+          <input class="input handle" name="handle" value="<%= channel.handle %>" placeholder="Set your handle" type="text">
+          <svg viewBox="0 0 24 24">
+            <path d="M13,13h-2V7h2V13z M13,17h-2v-2h2V17z M22,12c0,5.52-4.48,10-10,10S2,17.52,2,12S6.48,2,12,2S22,6.48,22,12z M21,12 c0-4.96-4.04-9-9-9c-4.96,0-9,4.04-9,9c0,4.96,4.04,9,9,9C16.96,21,21,16.96,21,12z"></path>
+          </svg>
+        </div>
+        <span class="message detail handle">http://localhost:3000/@<%= channel.handle %></span>
+      </div>
+      <div class="input-field">
+        <span class="label">Description</span>
+        <textarea class="input" name="description" value="<%= channel.description %>" placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places." type="text"></textarea>
+      </div>
+      <div class="input-field">
+        <span class="label">Picture</span>
+        <div class="detail">
+          Your profile picture will appear where your channel is presented on YouTube, like next to your videos and comments
+        </div>
+        <div class="image-input">
+          <div class="preview">
+            <img class="logo" src="<%= channel.logoURL %>" alt="">
+          </div>
+          <div class="side-section">
+            <div class="detail">
+              It’s recommended to use a picture that’s at least 98 x 98 pixels and 4MB or less. Use a PNG or GIF (no animations) file. Make sure your picture follows the YouTube Community Guidelines.
+            </div>
+            <label>
+              <input class="input logo" name="logo" type="file" accept="image/*">
+              <span class="btn">Upload</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="input-field">
+        <span class="label">Banner image</span>
+        <div class="detail">
+          This image will appear across the top of your channel
+        </div>
+        <div class="image-input">
+          <div class="preview">
+            <img class="banner" src="<%= channel.bannerImageURL %>" alt="">
+          </div>
+          <div class="side-section">
+            <div class="detail">
+              For the best results on all devices, use an image that’s at least 2048 x 1152 pixels and 6MB or less.
+            </div>
+            <label>
+              <input class="input banner" name="banner" type="file" accept="image/*">
+              <span class="btn">Upload</span>
+            </label>
+          </div>
+        </div>
+      </div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("editChannelForm");
+  const publishContainer = document.querySelector(".main.customization .header .publish-container");
+
+  const logoInput = document.querySelector(".main.customization .customization-section .input-field .input.logo");
+  const bannerInput = document.querySelector(".main.customization .customization-section .input-field .input.banner");
+
+  const logoPreview = document.querySelector(".main.customization .customization-section .input-field .image-input .preview .logo");
+  const bannerPreview = document.querySelector(".main.customization .customization-section .input-field .image-input .preview .banner");
+
+  const handleContainer = document.querySelector(".main.customization .customization-section .input-field .handle-container");
+  const handleInput = document.querySelector('.main.customization .customization-section .input-field .input.handle')
+  const handleMessage = document.querySelector(".main.customization .customization-section .input-field .message.handle");
+
+
+  let timeout = null
+
+
+  handleInput.addEventListener('input', function() {
+    handleErrorStatus()
+    if (handleInput.value.length > 2) {
+      if (!/^[a-zA-Z0-9._-]+$/.test(handleInput.value)) return handleErrorStatus(true, 'Your Handle can only contain letters, numbers, periods (.), dashes (-), and underscores (_)', 'Handle is invalid')
+      clearTimeout(timeout)
+      isHandleChecked = false
+      timeout = setTimeout(async function() {
+        try {
+          const response = await fetch(`/api/checkHandle?handle=${handleInput.value}`)
+          const data = await response.json()
+          if (data.exists) handleErrorStatus(true, `This handle isn't available. Here's one available: <span>@${data.suggestedHandel}</span>`, 'Handle is already taken')
+          else handleErrorStatus(false, `http://localhost:3000/@${handleInput.value}`)
+          isHandleChecked = true
+        } catch (error) {
+          console.error('Error:', error)
+        }
+      }, 500)
+    } else handleErrorStatus('inputError', 'Handle needs 3 or more characters', 'Handle needs 3 or more characters')
+
+  })
+
+  function handleErrorStatus(error, message, validity) {
+    handleInput.setCustomValidity(validity || '')
+    if (error) {
+      form.classList.add('error')
+      publishContainer.classList.remove("active")
+    } else {
+      form.classList.remove('error')
+      checkFormChange()
+    }
+
+    if (message) handleMessage.innerHTML = message
+    clearTimeout(timeout)
+  }
+
+  // Function to serialize form data
+  function serializeForm(form) {
+    const formData = new FormData(form);
+    const serialized = [];
+    formData.forEach((value, key) => serialized.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`));
+    return serialized.join("&");
+  }
+  const initialState = serializeForm(form);
+  const checkFormChange = () => publishContainer.classList.toggle("active", serializeForm(form) !== initialState);
+
+  const inputs = form.querySelectorAll(".input");
+  inputs.forEach(input => (input.type === "text" || input.tagName.toLowerCase() === "textarea") && input.addEventListener("input", checkFormChange));
+
+  logoInput.addEventListener("change", () => {
+    publishContainer.classList.add("active")
+    logoPreview.src = URL.createObjectURL(logoInput.files[0])
+  })
+
+  bannerInput.addEventListener("change", () => {
+    publishContainer.classList.add("active")
+    bannerPreview.src = URL.createObjectURL(bannerInput.files[0])
+  })
+</script>
